@@ -8,6 +8,9 @@
 			:renderers="renderers"
 			@change="onChange"
 		/>
+		<p>
+			<button class="saveButton" @click="save">Enregistrer</button>
+		</p>
 	</div>
 	
 </template>
@@ -46,6 +49,11 @@ export default defineComponent({
 		onChange(event) {
 			this.data = event.data;
 		},
+		save() {
+			localStorage[this.id] = JSON.stringify(this.data);
+			console.log("saved");
+			console.log(this.data);
+		}
 	},
 	mounted() {
 		console.log();
@@ -174,4 +182,8 @@ fieldset .vertical-layout .vertical-layout-item .control input {
 	width:100%;
 }
 
+/* end of JSON FORM styling */
+.saveButton {
+	margin-left:20px;
+}
 </style>
