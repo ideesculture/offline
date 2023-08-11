@@ -101,8 +101,9 @@ const count = ref(0)
 	padding:20px;
 	margin-bottom:14px;
 	img {
-		max-height:136px;
+		height: 136px;
 		object-fit: contain;
+		width: 120px;
 	}
 }
 .ellipsis {
