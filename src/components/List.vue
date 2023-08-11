@@ -16,7 +16,7 @@
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
-						<a :href="'http://localhost:5173/offline/edit/caobjects_' + item.idno">{{ item.idno }}</a>
+						<a :href="'http://localhost:5173/offline/edit/ca_objects_' + item.idno">{{ item.idno }}</a>
 						<ul />
 					</div>
 				</div>
