@@ -11,8 +11,10 @@ export default {
   mounted() {
 		$('#content').append($("<ul></ul>"));
 		$.each(localStorage, function(key, value){
-			if(/[0-9]+_[0-9]+/.test(key)) {
-				$('#content ul').append($("<a href='/offline/edit/"+key+"'><li>"+key+"</li></a>"));
+			var data = JSON.parse(value);
+			console.log(data);
+			if(data.idno != undefined) {
+				$('#content ul').append($("<a href='/offline/edit/"+key+"'><li>"+data['idno']+"</li></a>"));
 			}
 		});
   }
