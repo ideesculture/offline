@@ -14,22 +14,13 @@
 
 a {
     font-weight: 500;
-    color: #646cff;
+    color: #3dbdcf;
     text-decoration: inherit;
+	text-decoration: underline;
 }
 
 a:hover {
-    color: #535bf2;
-}
-
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-
-a:hover {
-    color: #535bf2;
+    color: #5dddef;
 }
 
 body {
@@ -65,7 +56,15 @@ button:focus,
 button:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
 }
-
+button.warning {
+	background-color: rgb(255, 198, 93);
+}
+button.info {
+	background-color:#3ebdcf;
+}
+button.danger {
+	background-color:rgb(208, 91, 91);
+}
 .card {
     padding: 2em;
 }
@@ -90,4 +89,49 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
+}
+
+.container {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.col {
+	flex: 1;
+	min-width: 20%;
+}
+.col2 {
+	flex: 2;
+	min-width: 20%;
+}
+.col3 {
+	flex: 3;
+	min-width: 20%;
+}
+.col4 {
+	flex: 4;
+	min-width: 20%;
+}
+.col5 {
+	flex: 5;
+	min-width: 20%;
+}
+.col6 {
+	flex: 6;
+	min-width: 20%;
+}
+
+@media (max-width:500px) {
+	.col {
+		min-width: 50%;
+	}
+}
+#list .container,
+#edit .container {
+	min-height:100vh;
+
+	.col.inspector {
+		border-left:2px solid #eeeeee;
+		border-right:2px solid #eeeeee;
+	}
 }

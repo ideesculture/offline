@@ -1,16 +1,41 @@
 <template>
 	<div id="edit">
-		<h3>Modification de <span v-html="id"></span></h3>
-		<json-forms
-			:data="data"
-			:schema="schema"
-			:uischema="uischema"
-			:renderers="renderers"
-			@change="onChange"
-		/>
-		<p>
-			<button class="saveButton" @click="save">Enregistrer</button>
-		</p>
+		<div class="container">
+			<div class="col inspector">
+				<div style="padding:6px 10px;font-size:0.8em;text-align: center;background: #eeeeee;">
+					<router-link class="routerlink" to="/offline/" style="color:black;">
+						RÉSULTATS
+					</router-link>
+				</div>
+				<p style="padding:4px 20px;">
+					Objet en cours de modification : <br/>
+					<b>{{ data.preferred_labels }}</b><br/> ({{ data.idno }})
+				</p>
+				<div style="text-align: center;padding:10px;border-bottom:2px solid #eeeeee;">
+					<img :src="data._default_representation">
+				</div>
+				<div class="screens">
+					<div class="screen active">INFORMATIONS DESCRIPTIVES</div>
+					<div class="screen">INFORMATIONS TECHNIQUES</div>
+					<div class="screen">ETAT DE CONSERVATION</div>
+				</div>
+			</div>
+			<div class="col4">
+				<json-forms
+					:data="data"
+					:schema="schema"
+					:uischema="uischema"
+					:renderers="renderers"
+					@change="onChange"
+				/>
+				<p>
+					<button class="saveButton info" @click="save">Enregistrer</button>&nbsp;
+					<router-link class="routerlink" to="/offline/">
+						<button class="cancelButton">Annuler</button>
+					</router-link>
+				</p>
+			</div>
+		</div>
 	</div>
 	
 </template>
@@ -84,7 +109,9 @@ const count = ref(0)
 	text-align: left;
 	margin: auto;
 	max-width: 1000px;
-	padding: 8px;
+	padding: 2px 8px 8px 8px;
+	z-index:50;
+	position:relative;
 
 	textarea {
 		width: calc(100% - 28px);
@@ -185,5 +212,15 @@ fieldset .vertical-layout .vertical-layout-item .control input {
 /* end of JSON FORM styling */
 .saveButton {
 	margin-left:20px;
+}
+.container h3 {
+	padding-left:24px;
+}
+.screens .screen {
+	padding:4px 10px;
+	font-size:0.9em;
+}
+.screens .screen.active {
+	background-color:#eeeeee;
 }
 </style>

@@ -61,5 +61,8 @@ import List from './components/List.vue'
 	box-shadow: 0 0 5px #888;
 	height:58px;
 	clear:both;
+	z-index:100;
+	display:block;
+	position:relative;
 }
 </style>
