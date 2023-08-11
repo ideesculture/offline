@@ -1,18 +1,15 @@
 <template>
 	<div id="edit">
-		<p>Modification de <span v-html="id"></span></p>
-		<textarea v-model="name">
-
-		</textarea>
-
+		<h3>Modification de <span v-html="id"></span></h3>
+		<json-forms
+			:data="data"
+			:schema="schema"
+			:uischema="uischema"
+			:renderers="renderers"
+			@change="onChange"
+		/>
 	</div>
-	<json-forms
-    :data="data"
-    :schema="schema"
-    :uischema="uischema"
-    :renderers="renderers"
-    @change="onChange"
-  />
+	
 </template>
 
 <script>
@@ -50,7 +47,6 @@ export default defineComponent({
 			this.data = event.data;
 		},
 	},
-
 	mounted() {
 		console.log();
 		let thisname = this.$route.params.id;
@@ -60,7 +56,8 @@ export default defineComponent({
 		this._settings = JSON.parse(localStorage["_settings"]);
 		this.schema = this._settings.schema;
 		this.uischema = this._settings.uischema;
-		console.log(this.uischema);
+		this.data = JSON.parse(localStorage[thisname]);
+		console.log(this.data);
 	},
 	watch: {
 		name(newName) {
@@ -88,6 +85,10 @@ const count = ref(0)
 }
 
 /* JSON FORM STYLES */
+
+#edit > .vertical-layout {
+	padding-top:0;
+}
 .vertical-layout {
 	text-align: left;
 	padding:25px;
@@ -126,4 +127,51 @@ const count = ref(0)
 .horizontal-layout .horizontal-layout-item .control input {
 	width:100%;
 }
+fieldset {
+	display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.15em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.125em;
+    min-inline-size: min-content;
+    border-width: 1px;
+    border-style: groove;
+    border-color: darkgray;
+	border-left:1px solid darkgray;
+	border-bottom:1px solid darkgray;
+	border-right:none;
+	border-top:none;
+	border-radius:4px;
+	.vertical-layout {
+		padding-bottom:10px;
+	}
+	margin-bottom:20px;
+}
+fieldset .array-list-label {
+	font-size:0.8em;
+	padding-left:10px;
+}
+fieldset .vertical-layout {
+	display:flex;
+	padding:0;
+}
+fieldset .vertical-layout .vertical-layout-item{
+	flex:1;
+	flex-grow: 1;
+	padding-left:10px;
+	padding-right:10px;
+}
+fieldset .vertical-layout .vertical-layout-item:first-child {
+	padding-left:0;
+}
+fieldset .vertical-layout .vertical-layout-item:last-child {
+	padding-right:0;
+}
+
+fieldset .vertical-layout .vertical-layout-item .control input {
+	width:100%;
+}
+
 </style>

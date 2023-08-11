@@ -34,6 +34,26 @@ export default {
 									},
 								}
 							},
+							auteur: {
+								type: 'array',
+								items: {
+									type: 'object',
+									properties: {
+										preferred_labels: {
+											type: "string"
+										},
+										relationship_type: {
+											type: "string"
+										},
+									}
+								}
+							},
+							titre_descriptif: {
+								type: "string"
+							},
+							Date_prise_vue: {
+								type: "string"
+							},
 						},
 					},
 					uischema: {
@@ -63,6 +83,18 @@ export default {
 										scope: '#/properties/ancien_num/properties/remarque',
 									}
 								]
+							},
+							{
+								type: 'Control',
+								scope: '#/properties/auteur',
+							},
+							{
+								type: 'Control',
+								scope: '#/properties/titre_descriptif',
+							},
+							{
+								type: 'Control',
+								scope: '#/properties/Date_prise_vue',
 							}
 						],
 					},
