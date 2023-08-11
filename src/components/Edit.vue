@@ -12,7 +12,7 @@
 					<b>{{ data.preferred_labels }}</b><br/> ({{ data.idno }})
 				</p>
 				<div style="text-align: center;padding:10px;border-bottom:2px solid #eeeeee;">
-					<img :src="data._default_representation">
+					<img class="thumbnail" :src="data._default_representation">
 				</div>
 				<div class="screens">
 					<div class="screen active">INFORMATIONS DESCRIPTIVES</div>
@@ -222,5 +222,8 @@ fieldset .vertical-layout .vertical-layout-item .control input {
 }
 .screens .screen.active {
 	background-color:#eeeeee;
+}
+img.thumbnail {
+	max-width: 100%;
 }
 </style>

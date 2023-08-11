@@ -84,9 +84,11 @@ const count = ref(0)
 
 .results {
 	display: flex;
+	flex-wrap: wrap;
+
 	> div {
 		flex:1;
-		width:25%;
+		width:calc(25% - 20px);
 		text-align: center;
 		padding:10px;
 	}
@@ -104,7 +106,7 @@ const count = ref(0)
 	}
 }
 .ellipsis {
-	width:200px;
+	width:170px;
 	text-overflow: ellipsis;
 	display: inline-block;
 	height:22px;
