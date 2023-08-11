@@ -2,9 +2,11 @@
 	<div id="list">
 		<div class="container">
 			<div class="col inspector">
-				<router-link class="routerlink" to="/offline/" style="color:black;text-decoration: none;">
-					RECHERCHER OBJETS
-				</router-link>
+				<div class="rechercher">
+					<router-link class="routerlink" to="/offline/" style="color:black;text-decoration: none;">
+						RECHERCHER OBJETS
+					</router-link>
+				</div>
 			</div>
 			<div class="col4">
 				<div class="results">

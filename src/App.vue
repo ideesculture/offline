@@ -30,6 +30,7 @@ import List from './components/List.vue'
 		.routerlink {
 			color:black;
 			padding:0 10px;
+			text-decoration:none;
 		}
 	}
 }

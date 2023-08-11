@@ -2,7 +2,7 @@
 	<div id="edit">
 		<div class="container">
 			<div class="col inspector">
-				<div style="padding:6px 10px;font-size:0.8em;text-align: center;background: #eeeeee;">
+				<div class="resultats">
 					<router-link class="routerlink" to="/offline/" style="color:black;">
 						RÉSULTATS
 					</router-link>

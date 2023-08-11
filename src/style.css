@@ -133,5 +133,12 @@ button.danger {
 	.col.inspector {
 		border-left:2px solid #eeeeee;
 		border-right:2px solid #eeeeee;
+		.resultats {
+			padding:6px 10px;font-size:0.8em;text-align: center;background: #eeeeee;
+		}
+		.rechercher {
+			padding:6px 10px;
+		}
 	}
+
 }
