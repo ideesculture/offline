@@ -9,6 +9,13 @@
 				</div>
 			</div>
 			<div class="col4">
+				<div class="searchblock">
+					<p class="searchblock1">Recherche : <input type="text" v-model="search"></p>
+					<p class="searchblock2" style="text-align: right;"><button>🔍 Recherche</button></p>
+				</div>
+				<div class="numresultsblock">
+					<span id="numresults"></span> objets
+				</div>
 				<div class="results">
 					<div v-for="item in data">
 						<div class="thumbnail-image"> 
@@ -16,7 +23,7 @@
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
-						<a :href="'http://localhost:5173/offline/edit/ca_objects_' + item.idno">{{ item.idno }}</a>
+						<a :href="'http://localhost:5173/offline/edit/ca_objects_' + item.id">{{ item.idno }}</a>
 						<ul />
 					</div>
 				</div>
@@ -33,12 +40,19 @@ import useLocalStorage from '../useLocalStorage'
 export default {
 	data() {
 		return {
-			data: []
+			data: [],
+			search: ""
 		}
 	},
+	filteredItems() {
+      return this.data.filter(item => {
+         return item.preferred_labels.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+      })
+    },
 	mounted() {
 		$('#content').append($("<ul></ul>"));
 		let that=this;
+		let i = 0;
 		$.each(localStorage, function (key, value) {
 			if(typeof value != 'string') return;
 			var data = JSON.parse(value);
@@ -46,8 +60,10 @@ export default {
 			if (data.idno != undefined) {
 				$('#content ul').append($("<a href='/offline/edit/" + key + "'><li>" + data['idno'] + "</li></a>"));
 				that.data.push(data);
+				i++;
 			}
 		});
+		$('#numresults').html(i);
 		console.log(that.data);
 	}
 }
@@ -87,7 +103,7 @@ const count = ref(0)
 	flex-wrap: wrap;
 
 	> div {
-		flex:1;
+		flex:0 1 calc(25% - 20px);
 		width:calc(25% - 20px);
 		text-align: center;
 		padding:10px;
@@ -114,5 +130,29 @@ const count = ref(0)
 	overflow: hidden; /* to hide anything that doesn't fit in the containing element. */
     white-space: nowrap; /* to make sure the line doesn't break when it is longer than the containing div. */
     
+}
+.searchblock {
+	background-color: #f9f9f9;
+	margin:-8px 10px 10px 10px;
+	p.searchblock1 {
+		padding:10px;
+		font-size:0.8em;
+		margin-bottom:0;
+		input {
+			padding:6px;
+			border:1px solid lightgray;
+			width:calc(100% - 170px);
+		}
+	}
+	p.searchblock2 {
+		margin-top: 0;
+	}
+}
+.numresultsblock {
+	border-bottom: 4px solid #e9e9e9;
+	margin:-8px 10px 10px 10px;
+	padding:10px 10px 2px 10px;
+	font-size:0.8em;
+	text-align: center;
 }
 </style>

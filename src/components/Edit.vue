@@ -83,14 +83,16 @@ export default defineComponent({
 	mounted() {
 		console.log();
 		let thisname = this.$route.params.id;
+		console.log("info", thisname);
 		if (localStorage[thisname]) {
-			this.name = localStorage[thisname];
+			console.log(localStorage[thisname]);
+			console.log(JSON.parse(localStorage[thisname]));
 		}
 		this._settings = JSON.parse(localStorage["_settings"]);
 		this.schema = this._settings.schema;
 		this.uischema = this._settings.uischema;
 		this.data = JSON.parse(localStorage[thisname]);
-		console.log(this.data);
+		console.log(this._settings);
 	},
 	watch: {
 		name(newName) {

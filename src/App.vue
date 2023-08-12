@@ -7,8 +7,9 @@ import List from './components/List.vue'
 		<div class="navbar">
 			<div id="logo"><img src="https://demo.ideesculture.fr/gestion/themes/default/graphics/logos/menu_logo.png" /></div>
 			<div id="items">
-				<router-link class="routerlink" to="/offline/">OFFLINE</router-link>
-				<router-link class="routerlink" to="/offline/testload">TESTLOAD</router-link>
+				<router-link class="routerlink" to="/offline/">CHERCHER</router-link>
+				<router-link class="routerlink" to="/offline/loading.html">CHARGER</router-link>
+				<router-link class="routerlink" to="/offline/testload">_SETTINGS</router-link>
 			</div>
 			<div id="searchBar"><input type="text">🔎</div>
 		</div>
