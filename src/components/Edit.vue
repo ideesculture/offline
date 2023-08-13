@@ -15,9 +15,9 @@
 					<img class="thumbnail" :src="data._default_representation">
 				</div>
 				<div class="screens">
-					<div class="screen active">INFORMATIONS DESCRIPTIVES</div>
-					<div class="screen">INFORMATIONS TECHNIQUES</div>
-					<div class="screen">ETAT DE CONSERVATION</div>
+					<div v-for="screen in screens" :class="((screen == active) ? 'active ' : '') + 'screen'" @click="loadScreen(screen)">
+						{{ screen }}
+					</div>
 				</div>
 			</div>
 			<div class="col4">
@@ -66,39 +66,53 @@ export default defineComponent({
 			_settings:{},
 			schema: {},
 			uischema: {},
-			name: "",
-			id: this.$route.params.id
+			id: this.$route.params.id,
+			// default & active screen name
+			default: "",
+			active: "",
+			
+			screens:[]
 		}
 	},
 	methods: {
+		machin(text) {
+			console.log("machin");
+			console.log(text);
+		},
 		onChange(event) {
 			this.data = event.data;
 		},
 		save() {
 			localStorage[this.id] = JSON.stringify(this.data);
 			console.log("saved");
-			console.log(this.data);
+		},
+		loadScreen(screen) {
+			console.log(screen);
+			this.active = screen;
+			// set the current screen schema & uischema
+			this.schema = this._settings._editor.ca_objects[screen].schema;
+			this.uischema = this._settings._editor.ca_objects[screen].uischema;
 		}
+	},
+	computed: {
+		
 	},
 	mounted() {
-		console.log();
-		let thisname = this.$route.params.id;
-		console.log("info", thisname);
-		if (localStorage[thisname]) {
-			console.log(localStorage[thisname]);
-			console.log(JSON.parse(localStorage[thisname]));
-		}
+		this.item_id = this.$route.params.id;
 		this._settings = JSON.parse(localStorage["_settings"]);
-		this.schema = this._settings.schema;
-		this.uischema = this._settings.uischema;
-		this.data = JSON.parse(localStorage[thisname]);
-		console.log(this._settings);
+		
+		// screen names are inside _settings._editor.ca_objects
+		// we take the first one
+		this.screens = Object.keys(this._settings._editor.ca_objects);
+		this.default = this.screens[0];
+		this.active = this.default;
+
+		this.loadScreen(this.active);
+
+		// load data
+		this.data = JSON.parse(localStorage[this.item_id]);
 	},
 	watch: {
-		name(newName) {
-			let thisname = this.$route.params.id;
-			localStorage[thisname] = newName;
-		}
 	}
 });
 
@@ -114,11 +128,6 @@ const count = ref(0)
 	padding: 2px 8px 8px 8px;
 	z-index:50;
 	position:relative;
-
-	textarea {
-		width: calc(100% - 28px);
-		min-height: 300px;
-	}
 }
 
 /* JSON FORM STYLES */
@@ -143,6 +152,15 @@ const count = ref(0)
 	padding:8px 4px;
 	background:#fbfbfb;
 	border-bottom:1px solid darkgray;
+}
+.vertical-layout .control textarea {
+	width:100%;
+	border:none;
+	border-radius:4px;
+	padding:8px 4px;
+	background:#fbfbfb;
+	border-bottom:1px solid darkgray;
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 .horizontal-layout {
 	display:flex;
@@ -221,6 +239,8 @@ fieldset .vertical-layout .vertical-layout-item .control input {
 .screens .screen {
 	padding:4px 10px;
 	font-size:0.9em;
+	text-transform: uppercase;
+	cursor: pointer;
 }
 .screens .screen.active {
 	background-color:#eeeeee;

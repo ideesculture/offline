@@ -1,15 +1,15 @@
 <script setup>
-import List from './components/List.vue'
+import ListObjects from './components/ListObjects.vue'
 </script>
 
 <template>
   <div class="navbarContainer">
 		<div class="navbar">
-			<div id="logo"><img src="https://demo.ideesculture.fr/gestion/themes/default/graphics/logos/menu_logo.png" /></div>
+			<div id="logo"><img src="/menu_logo.png" /></div>
 			<div id="items">
-				<router-link class="routerlink" to="/offline/">CHERCHER</router-link>
+				<router-link class="routerlink" to="/offline/objects/">CHERCHER</router-link>
 				<router-link class="routerlink" to="/offline/loading.html">CHARGER</router-link>
-				<router-link class="routerlink" to="/offline/testload">_SETTINGS</router-link>
+				<router-link class="routerlink" to="/offline/loadsettings">_SETTINGS</router-link>
 			</div>
 			<div id="searchBar"><input type="text">🔎</div>
 		</div>
