@@ -30,7 +30,9 @@ export default {
 													type: "string"
 												},
 												type_num: {
-													type: "string"
+													type: "string",
+													enum: ['numéro de production','numéro de numérisation','numéro provisoire','ancien numéro',"numéro d'édition",'numéro séance','numéro de la vue','numéro auteur','numéro auteur séance','numéro auteur vue','numéro de résolution'],
+													default: "numéro de production"
 												},
 												remarque: {
 													type: "string"
