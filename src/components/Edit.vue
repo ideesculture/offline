@@ -206,34 +206,47 @@ fieldset {
 	border-right:none;
 	border-top:none;
 	border-radius:4px;
+	margin-bottom:20px;
+
+	.array-list-label {
+		font-size:0.8em;
+		padding-left:10px;
+	}
+
+	.select {
+		width:100%;
+		border:none;
+		border-radius:4px;
+		padding:8px 4px;
+		background:#fbfbfb;
+		border-bottom:1px solid darkgray;
+		option[value=""] {
+			display:none;
+		}
+	}
 	.vertical-layout {
 		padding-bottom:10px;
-	}
-	margin-bottom:20px;
-}
-fieldset .array-list-label {
-	font-size:0.8em;
-	padding-left:10px;
-}
-fieldset .vertical-layout {
-	display:flex;
-	padding:0;
-}
-fieldset .vertical-layout .vertical-layout-item{
-	flex:1;
-	flex-grow: 1;
-	padding-left:10px;
-	padding-right:10px;
-}
-fieldset .vertical-layout .vertical-layout-item:first-child {
-	padding-left:0;
-}
-fieldset .vertical-layout .vertical-layout-item:last-child {
-	padding-right:0;
-}
+		display:flex;
+		padding:0;
 
-fieldset .vertical-layout .vertical-layout-item .control input {
-	width:100%;
+		.vertical-layout-item{
+			flex:1;
+			flex-grow: 1;
+			padding-left:10px;
+			padding-right:10px;
+
+			.control input {
+				width:100%;
+			}			
+		}
+		.vertical-layout-item:first-child {
+			padding-left:0;
+		}
+		.vertical-layout-item:last-child {
+			padding-right:0;
+		}
+	}
+
 }
 
 /* end of JSON FORM styling */

@@ -46,7 +46,9 @@ export default {
 														type: "string"
 													},
 													relationship_type: {
-														type: "string"
+														type: "string",
+														enum: ['Auteur de la photographie','Auteur des œuvres photographiées','Auteur du tirage','Collecteur','Commanditaire','contributor','créateur','Découvreur','Dépositaire','Donateur','Éditeur','Fabricant','est le propriétaire du bien déposé','Etablissement affectataire','Exécutant','Imprimeur','Personne représentée','Prêteur','Producteur','Propriétaire','Rédacteur','Scénographe','Testateur','Valideur','Vendeur'],
+														default:"Auteur de la photographie"
 													},
 												}
 											}
