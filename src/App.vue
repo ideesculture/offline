@@ -26,7 +26,7 @@ export default {
 			<div id="logo"><img src="/menu_logo.png" /></div>
 			<div id="items">
 				<div class="menu" @click="toggleSearchMenu">CHERCHER
-					<div class="menu-content" style="">
+					<div class="menu-content" style="display: none;">
 						<router-link class="routerlink" to="/offline/objects/">OBJETS</router-link>
 						<router-link class="routerlink" to="/offline/entities/">ENTITÉS</router-link>
 						<router-link class="routerlink" to="/offline/collections/">COLLECTIONS</router-link>

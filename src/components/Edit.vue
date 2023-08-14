@@ -29,7 +29,7 @@
 					@change="onChange"
 				/>
 				<p>
-					<button class="saveButton info" @click="save">Enregistrer</button>&nbsp;
+					<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
 					<router-link class="routerlink" to="/offline/">
 						<button class="cancelButton">Annuler</button>
 					</router-link>
@@ -43,7 +43,7 @@
 <script>
 import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, toHandlers } from 'vue'
 
 const renderers = [
 	...vanillaRenderers,
@@ -60,9 +60,8 @@ export default defineComponent({
 	data() {
 		return {
 			renderers: Object.freeze(renderers),
-			data: {
-				number: 5,
-			},
+			data: {},
+			formerdata: {},
 			_settings:{},
 			schema: {},
 			uischema: {},
@@ -71,6 +70,7 @@ export default defineComponent({
 			default: "",
 			active: "",
 			
+			saveDisabled: true,
 			screens:[]
 		}
 	},
@@ -111,8 +111,15 @@ export default defineComponent({
 
 		// load data
 		this.data = JSON.parse(localStorage[this.item_id]);
+		this.formerdata = this.data;
 	},
 	watch: {
+		'data': function() {
+			if(this.data != this.formerdata) {
+				console.log("data has changed");
+				this.saveDisabled = false;
+			}
+		}
 	}
 });
 
@@ -232,6 +239,11 @@ fieldset .vertical-layout .vertical-layout-item .control input {
 /* end of JSON FORM styling */
 .saveButton {
 	margin-left:20px;
+}
+.saveButton:disabled {
+	cursor: not-allowed;
+	background:lightgray;
+	border:0;
 }
 .container h3 {
 	padding-left:24px;
