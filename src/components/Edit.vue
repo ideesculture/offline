@@ -173,22 +173,38 @@ const count = ref(0)
 	display:flex;
 	flex-direction:row;
 	align-items:center;
-}
-.horizontal-layout .horizontal-layout-item {
-	flex:1;
-	flex-grow: 1;
-	padding:10px;
-}
-.horizontal-layout .horizontal-layout-item:first-child {
-	padding-left:0;
-}
-.horizontal-layout .horizontal-layout-item:last-child {
-	padding-right:0;
+
+	.horizontal-layout-item {
+		flex:1;
+		flex-grow: 1;
+		padding:10px;
+		.control {
+			position:relative;
+
+			input {
+			}
+			input[type=checkbox] {
+				width:auto;
+				position:absolute;
+				top:4px;
+				left:0;
+				margin-left:-16px;
+			}
+			label {
+			}
+		}
+		.wrapper {
+		}
+
+	}
+	.horizontal-layout-item:first-child {
+		padding-left:0;
+	}
+	.horizontal-layout-item:last-child {
+		padding-right:0;
+	}
 }
 
-.horizontal-layout .horizontal-layout-item .control input {
-	width:100%;
-}
 fieldset {
 	display: block;
     margin-inline-start: 2px;
