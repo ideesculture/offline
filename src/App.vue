@@ -1,5 +1,23 @@
 <script setup>
 import ListObjects from './components/ListObjects.vue'
+
+</script>
+<script>
+import { ref } from 'vue'
+import $ from 'jquery'
+
+export default {
+	data() {
+		return {
+			data: []
+		}
+	},
+	methods: {
+		toggleSearchMenu() {
+			$(".menu-content").toggle()
+		}
+	}
+}
 </script>
 
 <template>
@@ -7,7 +25,16 @@ import ListObjects from './components/ListObjects.vue'
 		<div class="navbar">
 			<div id="logo"><img src="/menu_logo.png" /></div>
 			<div id="items">
-				<router-link class="routerlink" to="/offline/objects/">CHERCHER</router-link>
+				<div class="menu" @click="toggleSearchMenu">CHERCHER
+					<div class="menu-content" style="">
+						<router-link class="routerlink" to="/offline/objects/">OBJETS</router-link>
+						<router-link class="routerlink" to="/offline/entities/">ENTITÉS</router-link>
+						<router-link class="routerlink" to="/offline/collections/">COLLECTIONS</router-link>
+						<router-link class="routerlink" to="/offline/places/">LIEUX</router-link>
+						<router-link class="routerlink" to="/offline/storage_locations/">EMPLACEMENTS</router-link>
+					</div>
+				</div>
+				
 				<router-link class="routerlink" to="/offline/loading.html">CHARGER</router-link>
 				<router-link class="routerlink" to="/offline/loadsettings">_SETTINGS</router-link>
 			</div>
@@ -66,5 +93,28 @@ import ListObjects from './components/ListObjects.vue'
 	z-index:100;
 	display:block;
 	position:relative;
+}
+.menu {
+	padding-left:8px;
+	padding-right: 8px;
+}
+.menu-content {
+    position: relative;
+    left: 154px;
+    float: left;
+    width: 160px;
+    top: 42px;
+    z-index: 500;
+    background-color: white;
+    border-top: 1px solid #eeeeee;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    padding: 4px;
+
+	a {
+		display:block;
+		padding:3px 10px !important;
+		display:inline-block;
+	}
 }
 </style>
