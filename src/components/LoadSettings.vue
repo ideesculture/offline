@@ -1,5 +1,7 @@
 <template>
-	<div id="content">Load Settings</div>
+	<div id="content">Settings loaded</div>
+	<router-link class="routerlink" to="/offline/objects/">OBJETS</router-link>
+
 </template>
 
 <script>
@@ -55,10 +57,45 @@ export default {
 												}
 											}
 										},
+										titre_auteur: {
+											type: "string"
+										},
 										titre_descriptif: {
 											type: "string"
 										},
+										serie: {
+											type: "string"
+										},
+										description: {
+											type: "string"
+										},
 										Date_prise_vue: {
+											type: "string"
+										},
+										date_tirage_: {
+											type: "string"
+										},
+										lieu_prise_de_vue: {
+											type: 'array',
+											items: {
+												type: 'object',
+												properties: {
+													preferred_labels: {
+														type: "string"
+													},
+													relationship_type: {
+														type: "string",
+														enum: ["Décrit","Destination de sortie","Emplacement","Etait l'objet de la collection à","Lieu","Lieu de collecte","Lieu de conservation","Lieu de création ou d'éxécution","Lieu de découverte","Lieu de production","Lieu de propriété","Lieu de publication","Lieu de récolte","Lieu d'utilisation / destination","Représente"],
+														default:"Lieu"
+													},
+												}
+											}
+										},
+										themes: {
+											type: "string",
+											enum: ["Animaux","Architectures","Art","Cinéma","Corps","Industries","Loisirs","Mode","Musique","Nature morte","Paysages","Portraits","Portraits : Enfants","Publicités","Théâtre","Voyages"]
+										},
+										theme_mot_cles: {
 											type: "string"
 										},
 									},
@@ -100,6 +137,13 @@ export default {
 										},
 										{
 											type: 'Control',
+											scope: '#/properties/titre_auteur',
+											"options": {
+												"multi": true
+											}
+										},
+										{
+											type: 'Control',
 											scope: '#/properties/titre_descriptif',
 											"options": {
 												"multi": true
@@ -107,8 +151,35 @@ export default {
 										},
 										{
 											type: 'Control',
+											scope: '#/properties/serie'
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/description',
+											"options": {
+												"multi": true
+											}
+										},
+										{
+											type: 'Control',
 											scope: '#/properties/Date_prise_vue',
-										}
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/date_tirage_'
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/lieu_prise_de_vue',
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/themes',
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/theme_mot_cles',
+										},
 									],
 								},
 							},
@@ -176,17 +247,240 @@ export default {
 								schema: {
 									type: "object",
 									properties: {
-										idno: {
+										etat_global_u : {
+											"type": "object",
+											properties: {
+												"Très bon": {
+													type: "boolean"
+												},
+												"Bon": {
+													type: "boolean"
+												},
+												"Moyen": {
+													type: "boolean"
+												},
+												"Rien à signaler": {
+													type: "boolean"
+												},
+												"Mauvais": {
+													type: "boolean"
+												},
+												"Très mauvais": {
+													type: "boolean"
+												},
+												"A restaurer": {
+													type: "boolean"
+												}
+											}
+										},
+										etat : {
 											type: "string"
-										}
+										},
+										alte_obj : {
+											"type": "object",
+											properties: {
+												"Adhésif": { type: "boolean"},
+												"Cassé": { type: "boolean"},
+												"Coups": { type: "boolean"},
+												"Déchirure": { type: "boolean"},
+												"Décollement en surface": { type: "boolean"},
+												"Fissuré": { type: "boolean"},
+												"Fragilisation du papier": { type: "boolean"},
+												"Froissement": { type: "boolean"},
+												"Frottement": { type: "boolean"},
+												"Gondolement léger": { type: "boolean"},
+												"Gondolement marqué": { type: "boolean"},
+												"Griffes": { type: "boolean"},
+												"Jaunissement": { type: "boolean"},
+												"Lacune": { type: "boolean"},
+												"Moisissures": { type: "boolean"},
+												"Oxydation": { type: "boolean"},
+												"Pliure": { type: "boolean"},
+												"Rayures, griffes": { type: "boolean"},
+												"Restauration visible": { type: "boolean"},
+												"Reste (insecte)": { type: "boolean"},
+												"Rongements (animal)": { type: "boolean"},
+												"Salissures": { type: "boolean"},
+												"Taches (origine)": { type: "boolean"},
+												"Taches d’humidité": { type: "boolean"},
+												"Trace d’ancien pli": { type: "boolean"},
+												"Traces": { type: "boolean"},
+												"Traces (insecte)": { type: "boolean"},
+												"Trous": { type: "boolean"},
+												"Usure": { type: "boolean"},
+												"Voilé": { type: "boolean"},
+											}
+										},
+										accessrestrict : {
+											type: "string"
+										},
+										constatEtat : {
+											type: "string"
+										},
+										conditions_conservation : {
+											type: "string"
+										},
 									}
 								},
 								uischema: {
 									type: 'VerticalLayout',
-									elements: [
+									label: "Etat global",
+									class: "etat_global",
+									elements: [										
+										{
+											"type": "HorizontalLayout",
+											"elements": [
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Très bon',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Bon',
+												},	
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Moyen',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Rien à signaler',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Mauvais',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/Très mauvais',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/etat_global_u/properties/A restaurer',
+												}
+											]
+										},
 										{
 											type: 'Control',
-											scope: '#/properties/idno',
+											scope: '#/properties/etat',
+										},
+										{
+											"type": "HorizontalLayout",
+											"elements": [
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Adhésif',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Cassé',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Coups',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Déchirure',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Décollement en surface',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Fissuré',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Fragilisation du papier',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Froissement',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Frottement',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Gondolement léger',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Gondolement marqué',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Griffes',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Jaunissement',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Lacune',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Moisissures',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Oxydation',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Pliure',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Rayures, griffes',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Restauration visible',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Reste (insecte)',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Rongements (animal)',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Salissures',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Taches (origine)',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Trous',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/alte_obj/properties/Voilé',
+												}
+
+											]
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/accessrestrict',
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/constatEtat',
+										},
+										{
+											type: 'Control',
+											scope: '#/properties/conditions_conservation',
 										}
 									],
 								},
