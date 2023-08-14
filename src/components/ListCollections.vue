@@ -4,7 +4,7 @@
 			<div class="col inspector">
 				<div class="rechercher">
 					<router-link class="routerlink" to="/offline/" style="color:black;text-decoration: none;">
-						RECHERCHER OBJETS
+						RECHERCHER COLLECTIONS
 					</router-link>
 				</div>
 			</div>
@@ -14,17 +14,13 @@
 					<p class="searchblock2" style="text-align: right;"><button @click="dosearch">🔍 Recherche</button></p>
 				</div>
 				<div class="numresultsblock">
-					<span id="numresults">{{ numFilteredItems }}</span> objets
+					<span id="numresults">{{ numFilteredItems }}</span> collections
 				</div>
-				<div class="results">
+				<div class="entitiesresults">
 					<div v-for="item in filteredItems">
-						<div class="thumbnail-image"> 
-							<img v-if="item._default_representation" :src="item._default_representation" />
-							<img v-else src="/noimage.png" style="width:100%" />
-						</div>
-						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
-						<a :href="'http://localhost:5173/offline/edit/ca_objects_' + item.id">{{ item.idno }}</a>
-						<ul />
+						<a :href="'http://localhost:5173/offline/edit/ca_collections_' + item.id"><img src='/public/edit.png' style="height:22px;padding-right:8px;" align="top" /></a> 
+						<!-- {{ item.idno }} -->
+						<span class='ellipsis'>{{ item.preferred_labels }}</span>
 					</div>
 				</div>
 			</div>
@@ -76,8 +72,8 @@ export default {
 			if(typeof value != 'string') return;
 			var data = JSON.parse(value);
 			console.log(data.idno);
-			if (key.startsWith("ca_objects_") && (data['idno'] != null)) {
-				$('#content ul').append($("<a href='/offline/edit/" + key + "'><li>" + data['idno'] + "</li></a>"));
+			if (key.startsWith("ca_collections_") && (data['idno'] != null)) {
+				$('#content ul').append($("<a href='/offline/collections/edit/" + key + "'><li>" + data['idno'] + "</li></a>"));
 				that.data.push(data);
 				i++;
 			}
@@ -118,6 +114,16 @@ const count = ref(0)
 		height: 136px;
 		object-fit: contain;
 		width: 120px;
+	}
+}
+.entitiesresults {
+	margin:10px;
+	border-bottom: 1px solid #eeeeee;
+	> div {
+		margin:4px 0 6px 0;
+	}
+	.ellipsis {
+		display: inline;
 	}
 }
 </style>
