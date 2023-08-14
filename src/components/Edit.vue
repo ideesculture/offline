@@ -213,17 +213,6 @@ fieldset {
 		padding-left:10px;
 	}
 
-	.select {
-		width:100%;
-		border:none;
-		border-radius:4px;
-		padding:8px 4px;
-		background:#fbfbfb;
-		border-bottom:1px solid darkgray;
-		option[value=""] {
-			display:none;
-		}
-	}
 	.vertical-layout {
 		padding-bottom:10px;
 		display:flex;
@@ -246,8 +235,20 @@ fieldset {
 			padding-right:0;
 		}
 	}
-
 }
+
+.select {
+		width:100%;
+		border:none;
+		border-radius:4px;
+		padding:8px 4px;
+		background:#fbfbfb;
+		border-bottom:1px solid darkgray;
+		option[value=""] {
+			display:none;
+		}
+	}
+
 
 /* end of JSON FORM styling */
 .saveButton {
