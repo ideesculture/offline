@@ -187,25 +187,13 @@ export default {
 								schema: {
 									type: "object",
 									properties: {
-										idno: {
-											type: "string"
+										format_standard : {
+											type: "string",
+											enum: ["4x5","6×4.5","6x6","6x7","6x9","6×12","6×13","6x17","8,5×10","9x12","10x15","13x18","18x24","20x25","24x30","24x36","30×40","40×50","50×60","60×80"],
+											default: "non"
 										},
-										preferred_labels: {
+										inscriptions: {
 											type: "string"
-										},
-										ancien_num: {
-											type: 'object',
-											properties: {
-												ancien_numero_texte: {
-													type: "string"
-												},
-												type_num: {
-													type: "string"
-												},
-												remarque: {
-													type: "string"
-												},
-											}
 										}
 									},
 								},
@@ -214,31 +202,14 @@ export default {
 									elements: [
 										{
 											type: 'Control',
-											scope: '#/properties/idno',
+											scope: '#/properties/format_standard',
 										},
 										{
 											type: 'Control',
-											scope: '#/properties/preferred_labels',
+											scope: '#/properties/inscriptions',
 											"options": {
 												"multi": true
 											}
-										},
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/ancien_numero_texte',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/type_num',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/remarque',
-												}
-											]
 										}
 									],
 								},
@@ -311,14 +282,32 @@ export default {
 												"Voilé": { type: "boolean"},
 											}
 										},
-										accessrestrict : {
-											type: "string"
+										accessrestrict: {
+											type: 'object',
+											properties: {
+												oui_conditions: {
+													type: "string",
+													enum: ['oui','non'],
+													default: "non"
+												},
+												note_restri: {
+													type: "string"
+												},
+											}
 										},
 										constatEtat : {
 											type: "string"
 										},
 										conditions_conservation : {
-											type: "string"
+											type: 'object',
+											properties: {
+												luminosite_preconisee : {
+													type: "string"
+												},
+												conditions_climatiques : {
+													type: "string"
+												},
+											}
 										},
 									}
 								},
@@ -471,16 +460,34 @@ export default {
 											]
 										},
 										{
-											type: 'Control',
-											scope: '#/properties/accessrestrict',
+											"type": "HorizontalLayout",
+											"elements": [
+												{
+													type: 'Control',
+													scope: '#/properties/accessrestrict/properties/oui_conditions',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/accessrestrict/properties/note_restri',
+												},
+											]
 										},
 										{
 											type: 'Control',
 											scope: '#/properties/constatEtat',
 										},
 										{
-											type: 'Control',
-											scope: '#/properties/conditions_conservation',
+											"type": "HorizontalLayout",
+											"elements": [
+												{
+													type: 'Control',
+													scope: '#/properties/conditions_conservation/properties/luminosite_preconisee',
+												},
+												{
+													type: 'Control',
+													scope: '#/properties/conditions_conservation/properties/conditions_climatiques',
+												},
+											]
 										}
 									],
 								},
