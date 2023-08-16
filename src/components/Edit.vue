@@ -43,10 +43,13 @@
 <script>
 import { JsonForms } from '@jsonforms/vue';
 import { vanillaRenderers } from '@jsonforms/vue-vanilla';
-import { defineComponent, ref, toHandlers } from 'vue'
+import { defineComponent, ref, toHandlers } from 'vue';
+//import RatingControl from './vue-ca/RatingControl.vue';
+//import ratingControlTester from './vue-ca/ratingControlTester.js';
 
 const renderers = [
 	...vanillaRenderers,
+//	{ tester: ratingControlTester, renderer: RatingControl },
 	// here you can add custom renderers
 ];
 
@@ -98,6 +101,7 @@ export default defineComponent({
 		
 	},
 	mounted() {
+		console.log(vanillaRenderers[0]);
 		this.item_id = this.$route.params.id;
 		this._settings = JSON.parse(localStorage["_settings"]);
 		
