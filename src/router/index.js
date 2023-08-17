@@ -5,7 +5,8 @@ import ListObjects from '/src/components/ListObjects.vue'
 import ListPlaces from '/src/components/ListPlaces.vue'
 import ListStorageLocations from '/src/components/ListStorageLocations.vue'
 import LoadSettings from '/src/components/LoadSettings.vue'
-import Edit from '/src/components/Edit.vue'
+//import Edit from '/src/components/Edit.vue'
+import Edit2 from '/src/components/Edit2.vue'
 
 const routes = [{
         path: '/offline/',
@@ -38,7 +39,7 @@ const routes = [{
     }, {
         path: '/offline/edit/:id',
         name: 'Edit',
-        component: Edit,
+        component: Edit2,
     },
 
 ]
