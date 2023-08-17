@@ -226,9 +226,6 @@ const count = ref(0)
 <style lang="scss">
 .formkitContainer {
 	padding: 0 40px;
-	h3 {
-		padding-left:0 !important;
-	}
 }
 #edit {
 	clear: both;
@@ -285,5 +282,16 @@ div.formkit-outer {
 }
 .formkit-actions {
 	display: none;
+}
+.formkit-wrapper, .formkit-fieldset {
+	max-width: 100%;
+}
+form h3 {
+	background: #21b6c9;
+    color: white;
+    padding: 4px;
+	padding-left:6px !important;
+	border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
 }
 </style>
