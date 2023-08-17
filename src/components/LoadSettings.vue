@@ -226,7 +226,44 @@ export default {
 								],
 							},
 							"informations techniques": {
-								schema: []
+								schema: [
+								{
+										$el: 'h3',
+										children: 'Format standard'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'format_standard',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'format_standard',
+												options: {
+													format_1: "4×5",
+													format_2: "6×4.5",
+													format_3: "6×6",
+													format_4: "6×7",
+													format_5: "6x9",
+													format_6: "6×12",
+													format_7: "6×13",
+													format_8: "6×17",
+													format_9: "8,5x10",
+													format_10: "9x12",
+													format_11: "10×15",
+													format_12: "13x18",
+													format_13: "18×24",
+													format_14: "20x25",
+													format_15: "24x30",
+													format_16: "24x36",
+													format_17: "30×40",
+													format_18: "40×50",
+													format_19: "50×60",
+													format_20: "60x80",
+												}
+											},
+										]
+									},
+								]
 							},
 							"etat de conservation": {
 								schema: []
