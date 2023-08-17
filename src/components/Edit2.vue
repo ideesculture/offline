@@ -68,16 +68,6 @@ export default defineComponent({
   },
   {
     $el: 'h3',
-    children: "Titre"
-  },
-  {
-    $formkit: 'textarea',
-    name: 'preferred_labels',
-	rows: "3",
-    validation: 'required'
-  },
-  {
-    $el: 'h3',
     children: 'Autres numéros'
   },
   { 
@@ -150,6 +140,39 @@ export default defineComponent({
 },
 {
     $el: 'h3',
+    children: "Titre auteur"
+  },
+  {
+    $formkit: 'textarea',
+    name: 'preferred_labels',
+	rows: "3",
+    validation: 'required'
+  },
+  {
+    $el: 'h3',
+    children: 'Titre descriptif'
+  },
+  { 
+	$formkit: 'repeater',
+  	name: 'nonpreferred_labels',
+  	children: [
+	  {
+			$formkit: 'textarea',
+			name: 'nonpreferred_labels',
+			rows: "2"
+		},
+	]},
+	{
+    $el: 'h3',
+    children: "Description"
+  },
+  {
+    $formkit: 'textarea',
+    name: 'description',
+	rows: "3"
+  },
+{
+    $el: 'h3',
     children: "Date tirage"
   },
   {
@@ -159,6 +182,73 @@ export default defineComponent({
 	placeholder: 'choisir une date'
 
   },
+  {
+    $el: 'h3',
+    children: "Date de prise de vue"
+  },
+  {
+    $formkit: 'date',
+    name: 'date_prise_de_vue',
+	placeholder: 'choisir une date'
+  },
+  {
+    $el: 'h3',
+    children: 'Lieux liés'
+  },
+  { 
+	$formkit: 'repeater',
+  	name: 'ca_places',
+  	children: [
+    	{
+      		$formkit: 'text',
+      		name: 'preferred_labels',
+      		// $index is available to children.
+      		label: 'Lieu',
+      		validation: 'required',
+    	},
+		{
+			$formkit: 'select',
+			name: 'relationship_type',
+			label: 'Type de relation',
+			options: {
+				prise_de_vue : "Lieu (prise de vue)",
+			},
+		}
+  	],
+},
+{
+    $el: 'h3',
+    children: 'Thèmes'
+  },
+  { 
+	$formkit: 'repeater',
+  	name: 'ca_places',
+  	children: [
+		{
+			$formkit: 'select',
+			name: 'relationship_type',
+			options: {
+				Animal: "Animal",
+				Architecture: "Architecture",
+				Art: "Art",
+				Cinema: "Cinéma",
+				Corps: "Corps",
+				Industrie: "Industrie",
+				Loisirs: "Loisirs",
+				Mode: "Mode",
+				Musique: "Musique",
+				Nature_morte: "Nature morte",
+				Paysage: "Paysage",
+				Portrait: "Portrait",
+				Enfant: "Enfant",
+				Publicite: "Publicité",
+				Theatre: "Théâtre",
+				Voyage: "Voyage",
+			},
+		}
+  	],
+		
+}
 ],
 			id: this.$route.params.id,
 			// default & active screen name
@@ -293,5 +383,13 @@ form h3 {
 	padding-left:6px !important;
 	border-radius: 4px 4px 0 0;
     margin-bottom: 0;
+}
+.formkit-controls {
+	padding:4px;
+	>li {
+		margin:2px 0;
+		flex: 0 0 0.8em;
+		width: 0.8em;
+	}
 }
 </style>
