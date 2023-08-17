@@ -1,7 +1,6 @@
 <template>
 	<div id="content">Settings loaded</div>
 	<router-link class="routerlink" to="/offline/objects/">OBJETS</router-link>
-
 </template>
 
 <script>
@@ -16,484 +15,225 @@ export default {
 					_editor: {
 						ca_objects: {
 							"informations descriptives": {
-								schema: {
-									type: "object",
-									properties: {
-										idno: {
-											type: "string"
-										},
-										preferred_labels: {
-											type: "string"
-										},
-										ancien_num: {
-											type: 'object',
-											properties: {
-												ancien_numero_texte: {
-													type: "string"
-												},
-												type_num: {
-													type: "string",
-													enum: ['numéro de production','numéro de numérisation','numéro provisoire','ancien numéro',"numéro d'édition",'numéro séance','numéro de la vue','numéro auteur','numéro auteur séance','numéro auteur vue','numéro de résolution'],
-													default: "numéro de production"
-												},
-												remarque: {
-													type: "string"
-												},
-											}
-										},
-										auteur: {
-											type: 'array',
-											items: {
-												type: 'object',
-												properties: {
-													preferred_labels: {
-														type: "string"
-													},
-													relationship_type: {
-														type: "string",
-														enum: ['Auteur de la photographie','Auteur des œuvres photographiées','Auteur du tirage','Collecteur','Commanditaire','contributor','créateur','Découvreur','Dépositaire','Donateur','Éditeur','Fabricant','est le propriétaire du bien déposé','Etablissement affectataire','Exécutant','Imprimeur','Personne représentée','Prêteur','Producteur','Propriétaire','Rédacteur','Scénographe','Testateur','Valideur','Vendeur'],
-														default:"Auteur de la photographie"
-													},
-												}
-											}
-										},
-										titre_auteur: {
-											type: "string"
-										},
-										titre_descriptif: {
-											type: "string"
-										},
-										serie: {
-											type: "string"
-										},
-										description: {
-											type: "string"
-										},
-										Date_prise_vue: {
-											type: "string"
-										},
-										date_tirage_: {
-											type: "string"
-										},
-										lieu_prise_de_vue: {
-											type: 'array',
-											items: {
-												type: 'object',
-												properties: {
-													preferred_labels: {
-														type: "string"
-													},
-													relationship_type: {
-														type: "string",
-														enum: ["Décrit","Destination de sortie","Emplacement","Etait l'objet de la collection à","Lieu","Lieu de collecte","Lieu de conservation","Lieu de création ou d'éxécution","Lieu de découverte","Lieu de production","Lieu de propriété","Lieu de publication","Lieu de récolte","Lieu d'utilisation / destination","Représente"],
-														default:"Lieu"
-													},
-												}
-											}
-										},
-										themes: {
-											type: "string",
-											enum: ["Animaux","Architectures","Art","Cinéma","Corps","Industries","Loisirs","Mode","Musique","Nature morte","Paysages","Portraits","Portraits : Enfants","Publicités","Théâtre","Voyages"]
-										},
-										theme_mot_cles: {
-											type: "string"
-										},
+								schema: [
+									{
+										$el: 'h3',
+										children: "N° d'inventaire"
 									},
-								},
-								uischema: {
-									type: 'VerticalLayout',
-									elements: [
-										{
-											type: 'Control',
-											scope: '#/properties/idno',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/preferred_labels',
-											"options": {
-												"multi": true
-											}
-										},
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/ancien_numero_texte',
+									{
+										$formkit: 'text',
+										name: 'idno',
+										validation: 'required'
+									},
+									{
+										$el: 'h3',
+										children: 'Autres numéros'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'users',
+										children: [
+											{
+												$formkit: 'text',
+												name: 'autres_numeros',
+												// $index is available to children.
+												label: 'Autres numéros',
+												validation: 'required',
+											},
+											{
+												$formkit: 'select',
+												name: 'type_numero',
+												label: 'Type de numéro',
+												options: {
+													numprod: "numéro de production",
+													numnum: "numéro de numérisation",
+													numprov: "numéro provisoire",
+													ancnum: "ancien numéro",
+													numedi: "numéro d'édition",
+													numsea: "numéro séance",
+													numvue: "numéro de la vue",
+													numaut: "numéro auteur",
+													numase: "numéro auteur séance",
+													numavu: "numéro auteur vue",
+													numres: "numéro de résolution"
 												},
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/type_num',
+												//help: 'How often should we display a cookie notice?'
+											},
+											{
+												$formkit: 'text',
+												name: 'remarques',
+												// $index is available to children.
+												label: 'Remarques'
+											},
+										],
+									},
+									{
+										$el: 'h3',
+										children: 'Auteurs'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'auteur',
+										children: [
+											{
+												$formkit: 'text',
+												name: 'preferred_labels',
+												// $index is available to children.
+												label: 'Auteur',
+												validation: 'required',
+											},
+											{
+												$formkit: 'select',
+												name: 'relationship_type',
+												label: 'Type de relation',
+												options: {
+													photo: "Auteur de la photographie",
+													tirage: "Auteur du tirage",
+													imprimeur: "Imprimeur",
+													editeur: "Éditeur",
+													Propriétaire: "Propriétaire",
+													Dépositaire: "Dépositaire"
 												},
-												{
-													type: 'Control',
-													scope: '#/properties/ancien_num/properties/remarque',
-												}
-											]
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/auteur',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/titre_auteur',
-											"options": {
-												"multi": true
 											}
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/titre_descriptif',
-											"options": {
-												"multi": true
+										],
+									},
+									{
+										$el: 'h3',
+										children: "Titre auteur"
+									},
+									{
+										$formkit: 'textarea',
+										name: 'preferred_labels',
+										rows: "3",
+										validation: 'required'
+									},
+									{
+										$el: 'h3',
+										children: 'Titre descriptif'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'nonpreferred_labels',
+										children: [
+											{
+												$formkit: 'textarea',
+												name: 'nonpreferred_labels',
+												rows: "2"
+											},
+										]
+									},
+									{
+										$el: 'h3',
+										children: "Description"
+									},
+									{
+										$formkit: 'textarea',
+										name: 'description',
+										rows: "3"
+									},
+									{
+										$el: 'h3',
+										children: "Date tirage"
+									},
+									{
+										$formkit: 'date',
+										name: 'date_tirage',
+										validation: 'required',
+										placeholder: 'choisir une date'
+
+									},
+									{
+										$el: 'h3',
+										children: "Date de prise de vue"
+									},
+									{
+										$formkit: 'date',
+										name: 'date_prise_de_vue',
+										placeholder: 'choisir une date'
+									},
+									{
+										$el: 'h3',
+										children: 'Lieux liés'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'ca_places',
+										children: [
+											{
+												$formkit: 'text',
+												name: 'preferred_labels',
+												// $index is available to children.
+												label: 'Lieu',
+												validation: 'required',
+											},
+											{
+												$formkit: 'select',
+												name: 'relationship_type',
+												label: 'Type de relation',
+												options: {
+													prise_de_vue: "Lieu (prise de vue)",
+												},
 											}
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/serie'
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/description',
-											"options": {
-												"multi": true
+										],
+									},
+									{
+										$el: 'h3',
+										children: 'Thèmes'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'themes',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'themes',
+												options: {
+													Animal: "Animal",
+													Architecture: "Architecture",
+													Art: "Art",
+													Cinema: "Cinéma",
+													Corps: "Corps",
+													Industrie: "Industrie",
+													Loisirs: "Loisirs",
+													Mode: "Mode",
+													Musique: "Musique",
+													Nature_morte: "Nature morte",
+													Paysage: "Paysage",
+													Portrait: "Portrait",
+													Enfant: "Enfant",
+													Publicite: "Publicité",
+													Theatre: "Théâtre",
+													Voyage: "Voyage",
+												},
 											}
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/Date_prise_vue',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/date_tirage_'
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/lieu_prise_de_vue',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/themes',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/theme_mot_cles',
-										},
-									],
-								},
+										],
+									},
+									{
+										$el: 'h3',
+										children: 'Mots-clés'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'keywords',
+										children: [
+											{
+												$formkit: 'text',
+												name: 'keywords',
+											}
+										],
+
+									}
+								],
 							},
 							"informations techniques": {
-								schema: {
-									type: "object",
-									properties: {
-										format_standard : {
-											type: "string",
-											enum: ["4x5","6×4.5","6x6","6x7","6x9","6×12","6×13","6x17","8,5×10","9x12","10x15","13x18","18x24","20x25","24x30","24x36","30×40","40×50","50×60","60×80"],
-											default: "non"
-										},
-										inscriptions: {
-											type: "string"
-										}
-									},
-								},
-								uischema: {
-									type: 'VerticalLayout',
-									elements: [
-										{
-											type: 'Control',
-											scope: '#/properties/format_standard',
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/inscriptions',
-											"options": {
-												"multi": true
-											}
-										}
-									],
-								},
+								schema: []
 							},
 							"etat de conservation": {
-								schema: {
-									type: "object",
-									properties: {
-										etat_global_u : {
-											"type": "object",
-											properties: {
-												"Très bon": {
-													type: "boolean"
-												},
-												"Bon": {
-													type: "boolean"
-												},
-												"Moyen": {
-													type: "boolean"
-												},
-												"Rien à signaler": {
-													type: "boolean"
-												},
-												"Mauvais": {
-													type: "boolean"
-												},
-												"Très mauvais": {
-													type: "boolean"
-												},
-												"A restaurer": {
-													type: "boolean"
-												}
-											}
-										},
-										etat : {
-											type: "string"
-										},
-										alte_obj : {
-											"type": "object",
-											properties: {
-												"Adhésif": { type: "boolean"},
-												"Cassé": { type: "boolean"},
-												"Coups": { type: "boolean"},
-												"Déchirure": { type: "boolean"},
-												"Décollement en surface": { type: "boolean"},
-												"Fissuré": { type: "boolean"},
-												"Fragilisation du papier": { type: "boolean"},
-												"Froissement": { type: "boolean"},
-												"Frottement": { type: "boolean"},
-												"Gondolement léger": { type: "boolean"},
-												"Gondolement marqué": { type: "boolean"},
-												"Griffes": { type: "boolean"},
-												"Jaunissement": { type: "boolean"},
-												"Lacune": { type: "boolean"},
-												"Moisissures": { type: "boolean"},
-												"Oxydation": { type: "boolean"},
-												"Pliure": { type: "boolean"},
-												"Rayures, griffes": { type: "boolean"},
-												"Restauration visible": { type: "boolean"},
-												"Reste (insecte)": { type: "boolean"},
-												"Rongements (animal)": { type: "boolean"},
-												"Salissures": { type: "boolean"},
-												"Taches (origine)": { type: "boolean"},
-												"Taches d’humidité": { type: "boolean"},
-												"Trace d’ancien pli": { type: "boolean"},
-												"Traces": { type: "boolean"},
-												"Traces (insecte)": { type: "boolean"},
-												"Trous": { type: "boolean"},
-												"Usure": { type: "boolean"},
-												"Voilé": { type: "boolean"},
-											}
-										},
-										accessrestrict: {
-											type: 'object',
-											properties: {
-												oui_conditions: {
-													type: "string",
-													enum: ['oui','non'],
-													default: "non"
-												},
-												note_restri: {
-													type: "string"
-												},
-											}
-										},
-										constatEtat : {
-											type: "string"
-										},
-										conditions_conservation : {
-											type: 'object',
-											properties: {
-												luminosite_preconisee : {
-													type: "string"
-												},
-												conditions_climatiques : {
-													type: "string"
-												},
-											}
-										},
-									}
-								},
-								uischema: {
-									type: 'VerticalLayout',
-									label: "Etat global",
-									class: "etat_global",
-									elements: [										
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Très bon',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Bon',
-												},	
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Moyen',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Rien à signaler',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Mauvais',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/Très mauvais',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/etat_global_u/properties/A restaurer',
-												}
-											]
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/etat',
-										},
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Adhésif',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Cassé',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Coups',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Déchirure',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Décollement en surface',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Fissuré',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Fragilisation du papier',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Froissement',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Frottement',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Gondolement léger',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Gondolement marqué',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Griffes',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Jaunissement',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Lacune',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Moisissures',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Oxydation',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Pliure',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Rayures, griffes',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Restauration visible',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Reste (insecte)',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Rongements (animal)',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Salissures',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Taches (origine)',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Trous',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/alte_obj/properties/Voilé',
-												}
-
-											]
-										},
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/accessrestrict/properties/oui_conditions',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/accessrestrict/properties/note_restri',
-												},
-											]
-										},
-										{
-											type: 'Control',
-											scope: '#/properties/constatEtat',
-										},
-										{
-											"type": "HorizontalLayout",
-											"elements": [
-												{
-													type: 'Control',
-													scope: '#/properties/conditions_conservation/properties/luminosite_preconisee',
-												},
-												{
-													type: 'Control',
-													scope: '#/properties/conditions_conservation/properties/conditions_climatiques',
-												},
-											]
-										}
-									],
-								},
+								schema: []
 							}
+						},
 
-						}
+
 					}
 				}
 			}
