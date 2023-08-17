@@ -25,7 +25,10 @@
 					<FormKit type="form" v-model="data" @submit="register">
 						<FormKitSchema :schema="schema" />
   					</FormKit>
-  					<pre wrap>{{ data }}</pre>
+					
+  					<!--<hr/> <pre wrap>{{ data }}</pre> -->
+					<hr/>
+					<pre wrap>{{ schema }}</pre>
 				<p>
 					<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
 					<router-link class="routerlink" to="/offline/">
@@ -86,7 +89,7 @@ export default defineComponent({
 			console.log(screen);
 			this.active = screen;
 			// set the current screen schema & uischema
-			this.schema = this._settings._editor.ca_objects[screen].schema;
+			this.schema = this._settings._editor.ca_objects[screen].schema; //[];
 		}
 	},
 	computed: {

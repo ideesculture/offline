@@ -183,6 +183,25 @@ export default {
 									{
 										$formkit: 'repeater',
 										name: 'themes',
+										children: [],
+									},
+									{
+										$el: 'h3',
+										children: 'Mots-clés'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'keywords',
+										children: [
+											{
+												$formkit: 'text',
+												name: 'keywords',
+											}
+										],
+									},
+									{
+										$formkit: 'repeater',
+										name: 'themes',
 										children: [
 											{
 												$formkit: 'select',
@@ -208,36 +227,21 @@ export default {
 											}
 										],
 									},
-									{
-										$el: 'h3',
-										children: 'Mots-clés'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'keywords',
-										children: [
-											{
-												$formkit: 'text',
-												name: 'keywords',
-											}
-										],
-
-									}
 								],
 							},
-							"informations techniques": {
+							"informations_techniques": {
 								schema: [
-								{
+									{
 										$el: 'h3',
 										children: 'Format standard'
 									},
 									{
 										$formkit: 'repeater',
-										name: 'format_standard',
+										name: 'format',
 										children: [
 											{
 												$formkit: 'select',
-												name: 'format_standard',
+												name: 'format',
 												options: {
 													format_1: "4×5",
 													format_2: "6×4.5",
@@ -260,8 +264,328 @@ export default {
 													format_19: "50×60",
 													format_20: "60x80",
 												}
+											}
+										],
+									},
+									{
+										$el: 'h3',
+										children: 'Dimensions'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'dimensions',
+										classes : "{ 'dimensions' }",
+										children: [
+											{
+												$formkit: 'checkbox',
+												name: 'estime',
+												label: 'Estimé ?'
+											},
+											{
+												$formkit: 'select',
+												name: 'Unité',
+												label: 'Unité',
+												options: {
+													cm: "cm",
+													non_precise: "-"
+												}
+											},
+											{
+												$formkit: 'text',
+												name: 'Hauteur',
+												label: 'Hauteur'
+											},
+											{
+												$formkit: 'text',
+												name: 'Hauteur',
+												label: 'Hauteur'
+											},
+
+											{
+												$formkit: 'text',
+												name: 'Largeur',
+												label: 'Largeur'
+											},
+
+											{
+												$formkit: 'text',
+												name: 'Profondeur',
+												label: 'Profondeur'
+											},
+
+											{
+												$formkit: 'text',
+												name: 'Poids',
+												label: 'Poids'
+											},
+											{
+												$formkit: 'select',
+												name: 'Type de dimensions',
+												label: 'Type de dimensions',
+												options: {
+													avec_cadre: "Avec cadre",
+													avec_passe_partout: "Avec passe-partout", format_3: "6×6",
+													image: "Image",
+													objet: "Objet",
+													sans: "-"
+												}
+											}
+										],
+									},
+									{
+										$el: 'h3',
+										children: 'Support objet'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'support_objet',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'support_objet',
+												label: 'Support objet',
+												options: {
+													_date: "11 Avril 2023 à 2:00",
+													disque_dur: "disque magnétique (disque dur)",
+													disque_optique: "disque optique (CD)",
+													film: "film",
+													film_acetate: "film en acétate de cellulose",
+													film_nitrate: "film en nitrate de cellullose",
+													film_polyester: "film en polyester",
+													métal: "métal",
+													papier: "papier",
+													papier_colle: "papier collé sur carton épais",
+													papier_contrecolle: "papier contrecollé sur isorel",
+													serveur: "serveur",
+													verre: "verre"
+												}
+											},
+											{
+												$formkit: 'textarea',
+												name: 'note',
+												label: 'Notes',
+												rows: "3"
 											},
 										]
+									},
+									{
+										$el: 'h3',
+										children: 'Support image'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'support_objet',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'support_objet',
+												label: 'Support objet',
+												options: {
+													_date: "11 Avril 2023 à 2:00",
+													disque_dur: "disque magnétique (disque dur)",
+													disque_optique: "disque optique (CD)",
+													film: "film",
+													film_acetate: "film en acétate de cellulose",
+													film_nitrate: "film en nitrate de cellullose",
+													film_polyester: "film en polyester",
+													métal: "métal",
+													papier: "papier",
+													papier_colle: "papier collé sur carton épais",
+													papier_contrecolle: "papier contrecollé sur isorel",
+													serveur: "serveur",
+													verre: "verre"
+												}
+											},
+											{
+												$formkit: 'textarea',
+												name: 'note',
+												label: 'Notes',
+												rows: "3"
+											},
+										]
+									},
+									{
+										$el: 'h3',
+										children: 'Support contrecollage'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'support_contrecollage',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'support_objet',
+												label: 'Support contrecollage',
+												options: {
+													_date: "11 Avril 2023 à 2:00",
+													disque_dur: "disque magnétique (disque dur)",
+													disque_optique: "disque optique (CD)",
+													film: "film",
+													film_acetate: "film en acétate de cellulose",
+													film_nitrate: "film en nitrate de cellullose",
+													film_polyester: "film en polyester",
+													métal: "métal",
+													papier: "papier",
+													papier_colle: "papier collé sur carton épais",
+													papier_contrecolle: "papier contrecollé sur isorel",
+													serveur: "serveur",
+													verre: "verre"
+												}
+											},
+											{
+												$formkit: 'textarea',
+												name: 'note',
+												label: 'Notes',
+												rows: "3"
+											},
+										]
+									},
+									{
+										$el: 'h3',
+										children: 'Technique'
+									},
+									{
+										$formkit: 'repeater',
+										name: 'technique',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'support_objet',
+												label: 'Technique',
+												options: {
+													option1: "dessin",
+													option2: "feuille manuscrite",
+													option3: "feuille plastique",
+													option4: "fichier numérique",
+													option5: "impression",
+													option6: "Négatif",
+													option7: "Négatif Monochrome",
+													option8: "négatif au gélatino-bromure d'argent",
+													option9: "négatif au gélatino-bromure d'argent sur film en acétate de cellulose",
+													option10: "planche vierge",
+													option11: "Positif",
+													option12: "Positif Monochrome",
+													option13: "impression jet d'encre monochrome sur papier",
+													option14: "tirage au gélatino-bromure d'argent",
+													option15: "tirage gélatino-argentique",
+													option16: "Positif Polychrome",
+													option17: "diapositive à développement chromogène",
+													option18: "tirage sur papier à développement chromogène",
+													option19: "tirage numérique sur papier à développement chromogène"
+												}
+											},
+											{
+												$formkit: 'text',
+												name: 'autres_informations',
+												label: 'Autres informations'
+											},
+											{
+												$formkit: 'text',
+												name: 'contact_laboratoire',
+												label: 'Contact laboratoire'
+											},
+										]
+									},
+									{
+										$el: 'h3',
+										children: 'Couleur'
+									},
+									{
+										$formkit: 'select',
+										name: 'couleur',
+										options: {
+											Indéfini: "Indéfini",
+											netb: "N&B",
+											disque_optique: "NB monochrome",
+											film: "Polychrome"
+										}
+									},
+									{
+										$el: 'h3',
+										children: "Type d'objet"
+									},
+									{
+										$formkit: 'select',
+										name: "Type d'objet",
+										options: {
+											type_1: "album",
+											type_2: "carte cabinet",
+											type_3: "carte de visite",
+											type_4: "carte postale",
+											type_5: "diapositive (pour projection)",
+											type_6: "diptyque",
+											type_7: "objet",
+											type_8: "page d'album",
+											type_9: "photoclub",
+											type_10: "photomontage",
+											type_11: "planche-contact",
+											type_12: "planche-contact de tirages collés",
+											type_13: "planche d'album",
+											type_14: "planche de portfolio",
+											type_15: "planche d'album",
+											type_16: "plaque de projection",
+											type_17: "polaroid",
+											type_18: "timbre",
+											type_19: "vue stéréoscopique",
+										}
+									},
+									{
+										$el: 'h3',
+										children: "Type de tirage"
+									},
+									{
+										$formkit: 'radio',
+										name: "Type de tirage",
+										options: {
+											type_1: "Tirage moderne (retirage)",
+											type_2: "Tirage original d’époque (vintage)",
+											type_3: "Tirage original posthume",
+											type_4: "Tirage original tardif"
+										}
+									},
+									{
+										$el: 'h3',
+										children: "Statut du tirage"
+									},
+									{
+										$formkit: 'repeater',
+										name: 'support_contrecollage',
+										children: [
+											{
+												$formkit: 'select',
+												name: 'statut_tirage',
+												label: 'Statut tirage',
+												options: {
+													_date: "11 Avril 2023 à 2:00",
+													disque_dur: "disque magnétique (disque dur)",
+													disque_optique: "disque optique (CD)",
+													film: "film",
+													film_acetate: "film en acétate de cellulose",
+													film_nitrate: "film en nitrate de cellullose",
+													film_polyester: "film en polyester",
+													métal: "métal",
+													papier: "papier",
+													papier_colle: "papier collé sur carton épais",
+													papier_contrecolle: "papier contrecollé sur isorel",
+													serveur: "serveur",
+													verre: "verre"
+												}
+											},
+											{
+												$formkit: 'text',
+												name: 'date_tirage',
+												label: 'Date tirage'
+											},
+										]
+									},
+									{
+										$el: 'h3',
+										children: "Inscriptions/Cachets/Imprimés/Tampons"
+									},
+									{
+										$formkit: 'textarea',
+										name: 'inscriptions',
+										rows: "3"
 									},
 								]
 							},
