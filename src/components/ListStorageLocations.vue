@@ -18,7 +18,7 @@
 				</div>
 				<div class="storagelocationsresults">
 					<div v-for="item in filteredItems">
-						<a :href="'http://localhost:5173/offline/edit/ca_storage_locations_' + item.id"><img src='/public/edit.png' style="height:22px;padding-right:8px;" align="top" /></a> 
+						<a :href="'/offline/edit/ca_storage_locations_' + item.id"><img src='/public/edit.png' style="height:22px;padding-right:8px;" align="top" /></a> 
 						<!-- {{ item.idno }} -->
 						<span class='ellipsis'>{{ item.preferred_labels }}</span>
 					</div>
