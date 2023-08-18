@@ -14,587 +14,603 @@ export default {
 				_settings: {
 					_editor: {
 						ca_objects: {
-							"informations descriptives": {
-								schema: [
-									{
-										$el: 'h3',
-										children: "N° d'inventaire"
-									},
-									{
-										$formkit: 'text',
-										name: 'idno',
-										validation: 'required'
-									},
-									{
-										$el: 'h3',
-										children: 'Autres numéros'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'users',
-										children: [
-											{
-												$formkit: 'text',
-												name: 'autres_numeros',
-												// $index is available to children.
-												label: 'Autres numéros',
-												validation: 'required',
-											},
-											{
-												$formkit: 'select',
-												name: 'type_numero',
-												label: 'Type de numéro',
-												options: {
-													numprod: "numéro de production",
-													numnum: "numéro de numérisation",
-													numprov: "numéro provisoire",
-													ancnum: "ancien numéro",
-													numedi: "numéro d'édition",
-													numsea: "numéro séance",
-													numvue: "numéro de la vue",
-													numaut: "numéro auteur",
-													numase: "numéro auteur séance",
-													numavu: "numéro auteur vue",
-													numres: "numéro de résolution"
-												},
-												//help: 'How often should we display a cookie notice?'
-											},
-											{
-												$formkit: 'text',
-												name: 'remarques',
-												// $index is available to children.
-												label: 'Remarques'
-											},
-										],
-									},
-									{
-										$el: 'h3',
-										children: 'Auteurs'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'auteur',
-										children: [
-											{
-												$formkit: 'text',
-												name: 'preferred_labels',
-												// $index is available to children.
-												label: 'Auteur',
-												validation: 'required',
-											},
-											{
-												$formkit: 'select',
-												name: 'relationship_type',
-												label: 'Type de relation',
-												options: {
-													photo: "Auteur de la photographie",
-													tirage: "Auteur du tirage",
-													imprimeur: "Imprimeur",
-													editeur: "Éditeur",
-													Propriétaire: "Propriétaire",
-													Dépositaire: "Dépositaire"
-												},
-											}
-										],
-									},
-									{
-										$el: 'h3',
-										children: "Titre auteur"
-									},
-									{
-										$formkit: 'textarea',
-										name: 'preferred_labels',
-										rows: "3",
-										validation: 'required'
-									},
-									{
-										$el: 'h3',
-										children: 'Titre descriptif'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'nonpreferred_labels',
-										children: [
-											{
-												$formkit: 'textarea',
-												name: 'nonpreferred_labels',
-												rows: "2"
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: "Description"
-									},
-									{
-										$formkit: 'textarea',
-										name: 'description',
-										rows: "3"
-									},
-									{
-										$el: 'h3',
-										children: "Date tirage"
-									},
-									{
-										$formkit: 'date',
-										name: 'date_tirage',
-										validation: 'required',
-										placeholder: 'choisir une date'
-
-									},
-									{
-										$el: 'h3',
-										children: "Date de prise de vue"
-									},
-									{
-										$formkit: 'date',
-										name: 'date_prise_de_vue',
-										placeholder: 'choisir une date'
-									},
-									{
-										$el: 'h3',
-										children: 'Lieux liés'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'ca_places',
-										children: [
-											{
-												$formkit: 'text',
-												name: 'preferred_labels',
-												// $index is available to children.
-												label: 'Lieu',
-												validation: 'required',
-											},
-											{
-												$formkit: 'select',
-												name: 'relationship_type',
-												label: 'Type de relation',
-												options: {
-													prise_de_vue: "Lieu (prise de vue)",
-												},
-											}
-										],
-									},
-									{
-										$el: 'h3',
-										children: 'Thèmes'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'themes',
-										children: [],
-									},
-									{
-										$el: 'h3',
-										children: 'Mots-clés'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'keywords',
-										children: [
-											{
-												$formkit: 'text',
-												name: 'keywords',
-											}
-										],
-									},
-									{
-										$formkit: 'repeater',
-										name: 'themes',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'themes',
-												options: {
-													Animal: "Animal",
-													Architecture: "Architecture",
-													Art: "Art",
-													Cinema: "Cinéma",
-													Corps: "Corps",
-													Industrie: "Industrie",
-													Loisirs: "Loisirs",
-													Mode: "Mode",
-													Musique: "Musique",
-													Nature_morte: "Nature morte",
-													Paysage: "Paysage",
-													Portrait: "Portrait",
-													Enfant: "Enfant",
-													Publicite: "Publicité",
-													Theatre: "Théâtre",
-													Voyage: "Voyage",
-												},
-											}
-										],
-									},
+								screens: [
+									'Informations descriptives', 'Informations techniques'
 								],
-							},
-							"informations_techniques": {
 								schema: [
-									{
-										$el: 'h3',
-										children: 'Format standard'
+								{
+									$el: 'div',
+									attrs: {
+										class: 'form-body'
 									},
-									{
-										$formkit: 'repeater',
-										name: 'format',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'format',
-												options: {
-													format_1: "4×5",
-													format_2: "6×4.5",
-													format_3: "6×6",
-													format_4: "6×7",
-													format_5: "6x9",
-													format_6: "6×12",
-													format_7: "6×13",
-													format_8: "6×17",
-													format_9: "8,5x10",
-													format_10: "9x12",
-													format_11: "10×15",
-													format_12: "13x18",
-													format_13: "18×24",
-													format_14: "20x25",
-													format_15: "24x30",
-													format_16: "24x36",
-													format_17: "30×40",
-													format_18: "40×50",
-													format_19: "50×60",
-													format_20: "60x80",
-												}
-											}
-										],
-									},
-									{
-										$el: 'h3',
-										children: 'Dimensions'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'dimensions',
-										classes : "{ 'dimensions' }",
-										children: [
-											{
-												$formkit: 'checkbox',
-												name: 'estime',
-												label: 'Estimé ?'
+									children: [
+										{
+											$el: 'section',
+											attrs: {
+												class: 'Informations descriptives'
 											},
-											{
-												$formkit: 'select',
-												name: 'Unité',
-												label: 'Unité',
-												options: {
-													cm: "cm",
-													non_precise: "-"
-												}
-											},
-											{
-												$formkit: 'text',
-												name: 'Hauteur',
-												label: 'Hauteur'
-											},
-											{
-												$formkit: 'text',
-												name: 'Hauteur',
-												label: 'Hauteur'
-											},
+											children: [
+												{
+													$el: 'h3',
+													children: "N° d'inventaire"
+												},
+												{
+													$formkit: 'text',
+													name: 'idno',
+													validation: 'required'
+												},
+												{
+													$el: 'h3',
+													children: 'Autres numéros'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'users',
+													children: [
+														{
+															$formkit: 'text',
+															name: 'autres_numeros',
+															// $index is available to children.
+															label: 'Autres numéros',
+															validation: 'required',
+														},
+														{
+															$formkit: 'select',
+															name: 'type_numero',
+															label: 'Type de numéro',
+															options: {
+																numprod: "numéro de production",
+																numnum: "numéro de numérisation",
+																numprov: "numéro provisoire",
+																ancnum: "ancien numéro",
+																numedi: "numéro d'édition",
+																numsea: "numéro séance",
+																numvue: "numéro de la vue",
+																numaut: "numéro auteur",
+																numase: "numéro auteur séance",
+																numavu: "numéro auteur vue",
+																numres: "numéro de résolution"
+															},
+															//help: 'How often should we display a cookie notice?'
+														},
+														{
+															$formkit: 'text',
+															name: 'remarques',
+															// $index is available to children.
+															label: 'Remarques'
+														},
+													],
+												},
+												{
+													$el: 'h3',
+													children: 'Auteurs'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'auteur',
+													children: [
+														{
+															$formkit: 'text',
+															name: 'preferred_labels',
+															// $index is available to children.
+															label: 'Auteur',
+															validation: 'required',
+														},
+														{
+															$formkit: 'select',
+															name: 'relationship_type',
+															label: 'Type de relation',
+															options: {
+																photo: "Auteur de la photographie",
+																tirage: "Auteur du tirage",
+																imprimeur: "Imprimeur",
+																editeur: "Éditeur",
+																Propriétaire: "Propriétaire",
+																Dépositaire: "Dépositaire"
+															},
+														}
+													],
+												},
+												{
+													$el: 'h3',
+													children: "Titre auteur"
+												},
+												{
+													$formkit: 'textarea',
+													name: 'preferred_labels',
+													rows: "3",
+													validation: 'required'
+												},
+												{
+													$el: 'h3',
+													children: 'Titre descriptif'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'nonpreferred_labels',
+													children: [
+														{
+															$formkit: 'textarea',
+															name: 'nonpreferred_labels',
+															rows: "2"
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: "Description"
+												},
+												{
+													$formkit: 'textarea',
+													name: 'description',
+													rows: "3"
+												},
+												{
+													$el: 'h3',
+													children: "Date tirage"
+												},
+												{
+													$formkit: 'date',
+													name: 'date_tirage',
+													validation: 'required',
+													placeholder: 'choisir une date'
 
-											{
-												$formkit: 'text',
-												name: 'Largeur',
-												label: 'Largeur'
+												},
+												{
+													$el: 'h3',
+													children: "Date de prise de vue"
+												},
+												{
+													$formkit: 'date',
+													name: 'date_prise_de_vue',
+													placeholder: 'choisir une date'
+												},
+												{
+													$el: 'h3',
+													children: 'Lieux liés'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'ca_places',
+													children: [
+														{
+															$formkit: 'text',
+															name: 'preferred_labels',
+															// $index is available to children.
+															label: 'Lieu',
+															validation: 'required',
+														},
+														{
+															$formkit: 'select',
+															name: 'relationship_type',
+															label: 'Type de relation',
+															options: {
+																prise_de_vue: "Lieu (prise de vue)",
+															},
+														}
+													],
+												},
+												{
+													$el: 'h3',
+													children: 'Thèmes'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'themes',
+													children: [],
+												},
+												{
+													$el: 'h3',
+													children: 'Mots-clés'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'keywords',
+													children: [
+														{
+															$formkit: 'text',
+															name: 'keywords',
+														}
+													],
+												},
+												{
+													$formkit: 'repeater',
+													name: 'themes',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'themes',
+															options: {
+																Animal: "Animal",
+																Architecture: "Architecture",
+																Art: "Art",
+																Cinema: "Cinéma",
+																Corps: "Corps",
+																Industrie: "Industrie",
+																Loisirs: "Loisirs",
+																Mode: "Mode",
+																Musique: "Musique",
+																Nature_morte: "Nature morte",
+																Paysage: "Paysage",
+																Portrait: "Portrait",
+																Enfant: "Enfant",
+																Publicite: "Publicité",
+																Theatre: "Théâtre",
+																Voyage: "Voyage",
+															},
+														}
+													],
+												},
+											]
+										},
+										{
+											$el: 'section',
+											attrs: {
+												class: 'Informations techniques'
 											},
+											children: [
+												{
+													$el: 'h3',
+													children: 'Format standard'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'format',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'format',
+															options: {
+																format_1: "4×5",
+																format_2: "6×4.5",
+																format_3: "6×6",
+																format_4: "6×7",
+																format_5: "6x9",
+																format_6: "6×12",
+																format_7: "6×13",
+																format_8: "6×17",
+																format_9: "8,5x10",
+																format_10: "9x12",
+																format_11: "10×15",
+																format_12: "13x18",
+																format_13: "18×24",
+																format_14: "20x25",
+																format_15: "24x30",
+																format_16: "24x36",
+																format_17: "30×40",
+																format_18: "40×50",
+																format_19: "50×60",
+																format_20: "60x80",
+															}
+														}
+													],
+												},
+												{
+													$el: 'h3',
+													children: 'Dimensions'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'dimensions',
+													classes : "{ 'dimensions' }",
+													children: [
+														{
+															$formkit: 'checkbox',
+															name: 'estime',
+															label: 'Estimé ?'
+														},
+														{
+															$formkit: 'select',
+															name: 'Unité',
+															label: 'Unité',
+															options: {
+																cm: "cm",
+																non_precise: "-"
+															}
+														},
+														{
+															$formkit: 'text',
+															name: 'Hauteur',
+															label: 'Hauteur'
+														},
+														{
+															$formkit: 'text',
+															name: 'Hauteur',
+															label: 'Hauteur'
+														},
 
-											{
-												$formkit: 'text',
-												name: 'Profondeur',
-												label: 'Profondeur'
-											},
+														{
+															$formkit: 'text',
+															name: 'Largeur',
+															label: 'Largeur'
+														},
 
-											{
-												$formkit: 'text',
-												name: 'Poids',
-												label: 'Poids'
-											},
-											{
-												$formkit: 'select',
-												name: 'Type de dimensions',
-												label: 'Type de dimensions',
-												options: {
-													avec_cadre: "Avec cadre",
-													avec_passe_partout: "Avec passe-partout", format_3: "6×6",
-													image: "Image",
-													objet: "Objet",
-													sans: "-"
+														{
+															$formkit: 'text',
+															name: 'Profondeur',
+															label: 'Profondeur'
+														},
+
+														{
+															$formkit: 'text',
+															name: 'Poids',
+															label: 'Poids'
+														},
+														{
+															$formkit: 'select',
+															name: 'Type de dimensions',
+															label: 'Type de dimensions',
+															options: {
+																avec_cadre: "Avec cadre",
+																avec_passe_partout: "Avec passe-partout", format_3: "6×6",
+																image: "Image",
+																objet: "Objet",
+																sans: "-"
+															}
+														}
+													],
+												},
+												{
+													$el: 'h3',
+													children: 'Support objet'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'support_objet',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'support_objet',
+															label: 'Support objet',
+															options: {
+																_date: "11 Avril 2023 à 2:00",
+																disque_dur: "disque magnétique (disque dur)",
+																disque_optique: "disque optique (CD)",
+																film: "film",
+																film_acetate: "film en acétate de cellulose",
+																film_nitrate: "film en nitrate de cellullose",
+																film_polyester: "film en polyester",
+																métal: "métal",
+																papier: "papier",
+																papier_colle: "papier collé sur carton épais",
+																papier_contrecolle: "papier contrecollé sur isorel",
+																serveur: "serveur",
+																verre: "verre"
+															}
+														},
+														{
+															$formkit: 'textarea',
+															name: 'note',
+															label: 'Notes',
+															rows: "3"
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: 'Support image'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'support_objet',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'support_objet',
+															label: 'Support objet',
+															options: {
+																_date: "11 Avril 2023 à 2:00",
+																disque_dur: "disque magnétique (disque dur)",
+																disque_optique: "disque optique (CD)",
+																film: "film",
+																film_acetate: "film en acétate de cellulose",
+																film_nitrate: "film en nitrate de cellullose",
+																film_polyester: "film en polyester",
+																métal: "métal",
+																papier: "papier",
+																papier_colle: "papier collé sur carton épais",
+																papier_contrecolle: "papier contrecollé sur isorel",
+																serveur: "serveur",
+																verre: "verre"
+															}
+														},
+														{
+															$formkit: 'textarea',
+															name: 'note',
+															label: 'Notes',
+															rows: "3"
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: 'Support contrecollage'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'support_contrecollage',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'support_objet',
+															label: 'Support contrecollage',
+															options: {
+																_date: "11 Avril 2023 à 2:00",
+																disque_dur: "disque magnétique (disque dur)",
+																disque_optique: "disque optique (CD)",
+																film: "film",
+																film_acetate: "film en acétate de cellulose",
+																film_nitrate: "film en nitrate de cellullose",
+																film_polyester: "film en polyester",
+																métal: "métal",
+																papier: "papier",
+																papier_colle: "papier collé sur carton épais",
+																papier_contrecolle: "papier contrecollé sur isorel",
+																serveur: "serveur",
+																verre: "verre"
+															}
+														},
+														{
+															$formkit: 'textarea',
+															name: 'note',
+															label: 'Notes',
+															rows: "3"
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: 'Technique'
+												},
+												{
+													$formkit: 'repeater',
+													name: 'technique',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'support_objet',
+															label: 'Technique',
+															options: {
+																option1: "dessin",
+																option2: "feuille manuscrite",
+																option3: "feuille plastique",
+																option4: "fichier numérique",
+																option5: "impression",
+																option6: "Négatif",
+																option7: "Négatif Monochrome",
+																option8: "négatif au gélatino-bromure d'argent",
+																option9: "négatif au gélatino-bromure d'argent sur film en acétate de cellulose",
+																option10: "planche vierge",
+																option11: "Positif",
+																option12: "Positif Monochrome",
+																option13: "impression jet d'encre monochrome sur papier",
+																option14: "tirage au gélatino-bromure d'argent",
+																option15: "tirage gélatino-argentique",
+																option16: "Positif Polychrome",
+																option17: "diapositive à développement chromogène",
+																option18: "tirage sur papier à développement chromogène",
+																option19: "tirage numérique sur papier à développement chromogène"
+															}
+														},
+														{
+															$formkit: 'text',
+															name: 'autres_informations',
+															label: 'Autres informations'
+														},
+														{
+															$formkit: 'text',
+															name: 'contact_laboratoire',
+															label: 'Contact laboratoire'
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: 'Couleur'
+												},
+												{
+													$formkit: 'select',
+													name: 'couleur',
+													options: {
+														Indéfini: "Indéfini",
+														netb: "N&B",
+														disque_optique: "NB monochrome",
+														film: "Polychrome"
+													}
+												},
+												{
+													$el: 'h3',
+													children: "Type d'objet"
+												},
+												{
+													$formkit: 'select',
+													name: "Type d'objet",
+													options: {
+														type_1: "album",
+														type_2: "carte cabinet",
+														type_3: "carte de visite",
+														type_4: "carte postale",
+														type_5: "diapositive (pour projection)",
+														type_6: "diptyque",
+														type_7: "objet",
+														type_8: "page d'album",
+														type_9: "photoclub",
+														type_10: "photomontage",
+														type_11: "planche-contact",
+														type_12: "planche-contact de tirages collés",
+														type_13: "planche d'album",
+														type_14: "planche de portfolio",
+														type_15: "planche d'album",
+														type_16: "plaque de projection",
+														type_17: "polaroid",
+														type_18: "timbre",
+														type_19: "vue stéréoscopique",
+													}
+												},
+												{
+													$el: 'h3',
+													children: "Type de tirage"
+												},
+												{
+													$formkit: 'radio',
+													name: "Type de tirage",
+													options: {
+														type_1: "Tirage moderne (retirage)",
+														type_2: "Tirage original d’époque (vintage)",
+														type_3: "Tirage original posthume",
+														type_4: "Tirage original tardif"
+													}
+												},
+												{
+													$el: 'h3',
+													children: "Statut du tirage"
+												},
+												{
+													$formkit: 'repeater',
+													name: 'support_contrecollage',
+													children: [
+														{
+															$formkit: 'select',
+															name: 'statut_tirage',
+															label: 'Statut tirage',
+															options: {
+																_date: "11 Avril 2023 à 2:00",
+																disque_dur: "disque magnétique (disque dur)",
+																disque_optique: "disque optique (CD)",
+																film: "film",
+																film_acetate: "film en acétate de cellulose",
+																film_nitrate: "film en nitrate de cellullose",
+																film_polyester: "film en polyester",
+																métal: "métal",
+																papier: "papier",
+																papier_colle: "papier collé sur carton épais",
+																papier_contrecolle: "papier contrecollé sur isorel",
+																serveur: "serveur",
+																verre: "verre"
+															}
+														},
+														{
+															$formkit: 'text',
+															name: 'date_tirage',
+															label: 'Date tirage'
+														},
+													]
+												},
+												{
+													$el: 'h3',
+													children: "Inscriptions/Cachets/Imprimés/Tampons"
+												},
+												{
+													$formkit: 'textarea',
+													name: 'inscriptions',
+													rows: "3"
 												}
-											}
-										],
-									},
-									{
-										$el: 'h3',
-										children: 'Support objet'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'support_objet',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'support_objet',
-												label: 'Support objet',
-												options: {
-													_date: "11 Avril 2023 à 2:00",
-													disque_dur: "disque magnétique (disque dur)",
-													disque_optique: "disque optique (CD)",
-													film: "film",
-													film_acetate: "film en acétate de cellulose",
-													film_nitrate: "film en nitrate de cellullose",
-													film_polyester: "film en polyester",
-													métal: "métal",
-													papier: "papier",
-													papier_colle: "papier collé sur carton épais",
-													papier_contrecolle: "papier contrecollé sur isorel",
-													serveur: "serveur",
-													verre: "verre"
-												}
-											},
-											{
-												$formkit: 'textarea',
-												name: 'note',
-												label: 'Notes',
-												rows: "3"
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: 'Support image'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'support_objet',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'support_objet',
-												label: 'Support objet',
-												options: {
-													_date: "11 Avril 2023 à 2:00",
-													disque_dur: "disque magnétique (disque dur)",
-													disque_optique: "disque optique (CD)",
-													film: "film",
-													film_acetate: "film en acétate de cellulose",
-													film_nitrate: "film en nitrate de cellullose",
-													film_polyester: "film en polyester",
-													métal: "métal",
-													papier: "papier",
-													papier_colle: "papier collé sur carton épais",
-													papier_contrecolle: "papier contrecollé sur isorel",
-													serveur: "serveur",
-													verre: "verre"
-												}
-											},
-											{
-												$formkit: 'textarea',
-												name: 'note',
-												label: 'Notes',
-												rows: "3"
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: 'Support contrecollage'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'support_contrecollage',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'support_objet',
-												label: 'Support contrecollage',
-												options: {
-													_date: "11 Avril 2023 à 2:00",
-													disque_dur: "disque magnétique (disque dur)",
-													disque_optique: "disque optique (CD)",
-													film: "film",
-													film_acetate: "film en acétate de cellulose",
-													film_nitrate: "film en nitrate de cellullose",
-													film_polyester: "film en polyester",
-													métal: "métal",
-													papier: "papier",
-													papier_colle: "papier collé sur carton épais",
-													papier_contrecolle: "papier contrecollé sur isorel",
-													serveur: "serveur",
-													verre: "verre"
-												}
-											},
-											{
-												$formkit: 'textarea',
-												name: 'note',
-												label: 'Notes',
-												rows: "3"
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: 'Technique'
-									},
-									{
-										$formkit: 'repeater',
-										name: 'technique',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'support_objet',
-												label: 'Technique',
-												options: {
-													option1: "dessin",
-													option2: "feuille manuscrite",
-													option3: "feuille plastique",
-													option4: "fichier numérique",
-													option5: "impression",
-													option6: "Négatif",
-													option7: "Négatif Monochrome",
-													option8: "négatif au gélatino-bromure d'argent",
-													option9: "négatif au gélatino-bromure d'argent sur film en acétate de cellulose",
-													option10: "planche vierge",
-													option11: "Positif",
-													option12: "Positif Monochrome",
-													option13: "impression jet d'encre monochrome sur papier",
-													option14: "tirage au gélatino-bromure d'argent",
-													option15: "tirage gélatino-argentique",
-													option16: "Positif Polychrome",
-													option17: "diapositive à développement chromogène",
-													option18: "tirage sur papier à développement chromogène",
-													option19: "tirage numérique sur papier à développement chromogène"
-												}
-											},
-											{
-												$formkit: 'text',
-												name: 'autres_informations',
-												label: 'Autres informations'
-											},
-											{
-												$formkit: 'text',
-												name: 'contact_laboratoire',
-												label: 'Contact laboratoire'
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: 'Couleur'
-									},
-									{
-										$formkit: 'select',
-										name: 'couleur',
-										options: {
-											Indéfini: "Indéfini",
-											netb: "N&B",
-											disque_optique: "NB monochrome",
-											film: "Polychrome"
+											]
 										}
-									},
-									{
-										$el: 'h3',
-										children: "Type d'objet"
-									},
-									{
-										$formkit: 'select',
-										name: "Type d'objet",
-										options: {
-											type_1: "album",
-											type_2: "carte cabinet",
-											type_3: "carte de visite",
-											type_4: "carte postale",
-											type_5: "diapositive (pour projection)",
-											type_6: "diptyque",
-											type_7: "objet",
-											type_8: "page d'album",
-											type_9: "photoclub",
-											type_10: "photomontage",
-											type_11: "planche-contact",
-											type_12: "planche-contact de tirages collés",
-											type_13: "planche d'album",
-											type_14: "planche de portfolio",
-											type_15: "planche d'album",
-											type_16: "plaque de projection",
-											type_17: "polaroid",
-											type_18: "timbre",
-											type_19: "vue stéréoscopique",
-										}
-									},
-									{
-										$el: 'h3',
-										children: "Type de tirage"
-									},
-									{
-										$formkit: 'radio',
-										name: "Type de tirage",
-										options: {
-											type_1: "Tirage moderne (retirage)",
-											type_2: "Tirage original d’époque (vintage)",
-											type_3: "Tirage original posthume",
-											type_4: "Tirage original tardif"
-										}
-									},
-									{
-										$el: 'h3',
-										children: "Statut du tirage"
-									},
-									{
-										$formkit: 'repeater',
-										name: 'support_contrecollage',
-										children: [
-											{
-												$formkit: 'select',
-												name: 'statut_tirage',
-												label: 'Statut tirage',
-												options: {
-													_date: "11 Avril 2023 à 2:00",
-													disque_dur: "disque magnétique (disque dur)",
-													disque_optique: "disque optique (CD)",
-													film: "film",
-													film_acetate: "film en acétate de cellulose",
-													film_nitrate: "film en nitrate de cellullose",
-													film_polyester: "film en polyester",
-													métal: "métal",
-													papier: "papier",
-													papier_colle: "papier collé sur carton épais",
-													papier_contrecolle: "papier contrecollé sur isorel",
-													serveur: "serveur",
-													verre: "verre"
-												}
-											},
-											{
-												$formkit: 'text',
-												name: 'date_tirage',
-												label: 'Date tirage'
-											},
-										]
-									},
-									{
-										$el: 'h3',
-										children: "Inscriptions/Cachets/Imprimés/Tampons"
-									},
-									{
-										$formkit: 'textarea',
-										name: 'inscriptions',
-										rows: "3"
-									},
-								]
-							},
-							"etat de conservation": {
-								schema: []
-							}
+									],
+								}
+							]
 						},
-
-
 					}
 				}
 			}

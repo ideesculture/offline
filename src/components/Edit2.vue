@@ -47,8 +47,7 @@
 <script>
 import { defineComponent, ref, toHandlers } from 'vue';
 import { FormKitSchema } from '@formkit/vue'
-
-//import $ from 'jquery'
+import $ from 'jquery'
 
 export default defineComponent({
 	components: {
@@ -64,7 +63,7 @@ export default defineComponent({
 			// default & active screen name
 			default: "",
 			active: "",
-			
+			activeStep: "first",
 			saveDisabled: true,
 			screens:[]
 		}
@@ -86,10 +85,23 @@ export default defineComponent({
 			console.log("saved");
 		},
 		loadScreen(screen) {
-			console.log(screen);
 			this.active = screen;
 			// set the current screen schema & uischema
-			this.schema = this._settings._editor.ca_objects[screen].schema; //[];
+			//this.data.activeStep = "first";
+			let that=this;
+			// Jquery needs a small time to be able to find the elements
+			setTimeout(function() {
+				console.log($(".formkitContainer section"));
+				$(".formkitContainer section").each(function() {
+					console.log("class", $(this).attr("class"));
+					console.log("screen", screen);
+					if($(this).attr("class") !== screen) {
+						$(this).hide();
+					} else {
+						$(this).show();
+					}
+				});
+			}, 100);
 		}
 	},
 	computed: {
@@ -101,7 +113,8 @@ export default defineComponent({
 		
 		// screen names are inside _settings._editor.ca_objects
 		// we take the first one
-		this.screens = Object.keys(this._settings._editor.ca_objects);
+		this.schema = this._settings._editor.ca_objects.schema; //[];
+		this.screens = this._settings._editor.ca_objects.screens;
 		this.default = this.screens[0];
 		this.active = this.default;
 
@@ -202,5 +215,13 @@ form h3 {
 		flex: 0 0 0.8em;
 		width: 0.8em;
 	}
+}
+.formkit-outer {
+	margin-bottom: 8px;
+}
+.formkit-input {
+	padding-top:6px;
+	padding-bottom:6px;
+	padding-left:6px;
 }
 </style>
