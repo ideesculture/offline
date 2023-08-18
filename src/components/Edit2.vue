@@ -46,6 +46,7 @@
 import { defineComponent, ref, toHandlers } from 'vue';
 import { FormKitSchema } from '@formkit/vue'
 import $ from 'jquery'
+import { db } from '../db'
 
 export default defineComponent({
 	components: {
@@ -116,8 +117,14 @@ export default defineComponent({
 		this.loadScreen(this.active);
 
 		// load data
-		this.data = JSON.parse(localStorage[this.item_id]);
-		this.formerdata = this.data;
+		this.data = db.db_objects.get(this.item_id);
+		let that = this;
+		db.db_objects.get(this.item_id).then(function (item) {
+			console.log(item);
+			that.data = item.data;
+			that.formerdata = that.data;
+		});
+		
 	},
 	watch: {
 		'data': function() {
