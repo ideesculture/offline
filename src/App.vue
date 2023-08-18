@@ -34,9 +34,10 @@ export default {
 						<router-link class="routerlink" to="/offline/storage_locations/">EMPLACEMENTS</router-link>
 					</div>
 				</div>
+				<router-link class="routerlink" to="/offline/loadsettings" style="color:white;text-decoration:none;">_SETTINGS</router-link>
 				<!-- 
 				<router-link class="routerlink" to="/offline/loading.html" style="color:white;text-decoration:none;">CHARGER</router-link>
-				<router-link class="routerlink" to="/offline/loadsettings" style="color:white;text-decoration:none;">_SETTINGS</router-link>
+				
 				-->
 			</div>
 			<!--<div id="searchBar"><input type="text">🔎</div> -->

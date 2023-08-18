@@ -8,6 +8,7 @@ import { plugin, defaultConfig } from '@formkit/vue'
 import './style.css'
 import router from "./router/index"
 import App from './App.vue'
+import {db} from './db'
 
 import { createProPlugin, inputs } from '@formkit/pro'
 const pro = createProPlugin('fk-792724437d', inputs)

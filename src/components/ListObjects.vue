@@ -19,7 +19,7 @@
 				<div class="results">
 					<div v-for="item in filteredItems">
 						<div class="thumbnail-image"> 
-							<img v-if="item._default_representation" :src="item._default_representation" />
+							<img v-if="item.default_representation" :src="item.default_representation" />
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
@@ -35,7 +35,7 @@
 <script>
 import { ref } from 'vue'
 import $ from 'jquery'
-import ObjectThumbnail from './ObjectThumbnail.vue'
+import {db} from '../db'
 
 export default {
 	data() {
@@ -72,22 +72,15 @@ export default {
 		$('#content').append($("<ul></ul>"));
 		let that=this;
 		let i = 0;
-		$.each(localStorage, function (key, value) {
-			if(typeof value != 'string') return;
-			var data = JSON.parse(value);
-			console.log(data.idno);
-			if (key.startsWith("ca_objects_") && (data['idno'] != null)) {
-				$('#content ul').append($("<a href='/offline/edit/" + key + "'><li>" + data['idno'] + "</li></a>"));
-				that.data.push(data);
-				i++;
-			}
+		db.db_objects.each(function (item) {
+			console.log(item);
+			that.data.push(item.data);
+			i++;
 		});
 		$('#numresults').html(i);
 		console.log(that.data);
 	}
 }
-
-const count = ref(0)
 </script>
 
 <style lang="scss">

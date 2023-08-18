@@ -31,7 +31,6 @@
 <script>
 import { ref } from 'vue'
 import $ from 'jquery'
-import ObjectThumbnail from './ObjectThumbnail.vue'
 
 export default {
 	data() {
