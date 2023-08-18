@@ -27,8 +27,6 @@
   					</FormKit>
 					
   					<!--<hr/> <pre wrap>{{ data }}</pre> -->
-					<hr/>
-					<pre wrap>{{ schema }}</pre>
 				<p>
 					<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
 					<router-link class="routerlink" to="/offline/">
@@ -91,10 +89,7 @@ export default defineComponent({
 			let that=this;
 			// Jquery needs a small time to be able to find the elements
 			setTimeout(function() {
-				console.log($(".formkitContainer section"));
 				$(".formkitContainer section").each(function() {
-					console.log("class", $(this).attr("class"));
-					console.log("screen", screen);
 					if($(this).attr("class") !== screen) {
 						$(this).hide();
 					} else {
