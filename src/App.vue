@@ -15,6 +15,11 @@ export default {
 	methods: {
 		toggleSearchMenu() {
 			$(".menu-content").toggle()
+			$(".load-menu-content").hide()
+		},
+		toggleLoadMenu() {
+			$(".load-menu-content").toggle()
+			$(".menu-content").hide()
 		}
 	}
 }
@@ -29,9 +34,15 @@ export default {
 					<div class="menu-content" style="display: none;">
 						<router-link class="routerlink" to="/offline/objects/">OBJETS</router-link>
 						<router-link class="routerlink" to="/offline/entities/">ENTITÉS</router-link>
+						<router-link class="routerlink" to="/offline/occurrences/">OCCURRENCES</router-link>
 						<router-link class="routerlink" to="/offline/collections/">COLLECTIONS</router-link>
 						<router-link class="routerlink" to="/offline/places/">LIEUX</router-link>
 						<router-link class="routerlink" to="/offline/storage_locations/">EMPLACEMENTS</router-link>
+					</div>
+				</div>
+				<div class="load-menu" @click="toggleLoadMenu" style="padding-right:50px">CHARGER
+					<div class="load-menu-content" style="display: none;">
+						<router-link class="routerlink" to="/offline/import_database/">BASE DE DONNÉES</router-link>
 					</div>
 				</div>
 				<router-link class="routerlink" to="/offline/loadsettings" style="color:white;text-decoration:none;">_SETTINGS</router-link>
@@ -87,6 +98,7 @@ export default {
 
 #items {
 	padding:10px 10px;
+	position:relative;
 }
 .navbarContainer {
 	box-shadow: 0 0 5px #888;
@@ -96,13 +108,15 @@ export default {
 	display:block;
 	position:relative;
 }
-.menu {
+.load-menu, .menu {
 	padding-left:8px;
 	padding-right: 8px;
 }
+
+.load-menu-content,
 .menu-content {
-    position: relative;
-    left: 154px;
+    position: absolute;
+    right: 230px;
     float: left;
     width: 160px;
     top: 42px;
@@ -114,9 +128,11 @@ export default {
     padding: 4px;
 
 	a {
-		display:block;
 		padding:3px 10px !important;
 		display:inline-block;
 	}
+}
+.load-menu-content {
+    right: 84px;
 }
 </style>

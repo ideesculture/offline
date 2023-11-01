@@ -16,11 +16,14 @@
         "@formkit/themes": "^0.18.1",
         "@formkit/vue": "^0.18.1",
         "dexie": "^3.2.4",
+        "dexie-export-import": "^4.0.7",
+        "downloadjs": "^1.4.7",
         "jquery": "^3.6.4",
         "vue": "^3.3.4",
         "vue-router": "^4.1.6"
     },
     "devDependencies": {
+        "@types/downloadjs": "^1.4.5",
         "@vitejs/plugin-vue": "^4.1.0",
         "node-sass": "^8.0.0",
         "sass": "^1.59.3",

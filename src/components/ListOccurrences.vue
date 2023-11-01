@@ -4,7 +4,7 @@
 			<div class="col inspector">
 				<div class="rechercher">
 					<router-link class="routerlink" to="/offline/" style="color:black;text-decoration: none;">
-						RECHERCHER OBJETS
+						RECHERCHER OCCURRENCES
 					</router-link>
 				</div>
 			</div>
@@ -14,7 +14,7 @@
 					<p class="searchblock2" style="text-align: right;"><button @click="dosearch">🔍 Recherche</button></p>
 				</div>
 				<div class="numresultsblock">
-					<span id="numresults">{{ numFilteredItems }}</span> objets
+					<span id="numresults">{{ numFilteredItems }}</span> occurrences
 				</div>
 				<div class="results">
 					<div v-for="item in filteredItems">
@@ -23,7 +23,7 @@
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
-						<a :href="'/offline/edit/' + item.id">{{ item.idno.value }}</a>
+						<a :href="'/offline/edit/occurrence/' + item.id">{{ item.idno.value }}</a>
 						<ul />
 					</div>
 				</div>
@@ -72,12 +72,13 @@ export default {
 		$('#content').append($("<ul></ul>"));
 		let that=this;
 		let i = 0;
-		db.db_objects.each(function (item) {
+		db.db_occurrences.each(function (item) {
 			let data = JSON.parse(item.data);
+			console.log("data", item);
+			data.preferred_labels = data.preferred_labels.fr_FR[0].name;
 			data.id = item.id;
 			data.type_id = item.type_id;
-			data.preferred_labels = data.preferred_labels.fr_FR[0].name;
-			console.log(data);
+			//console.log(data);
 			that.data.push(data);
 			i++;
 		});
