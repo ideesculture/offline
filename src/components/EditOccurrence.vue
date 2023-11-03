@@ -29,15 +29,20 @@
 
 					<!--<hr/> <pre wrap>{{ data }}</pre> -->
 					<p>
-						<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
+						<button class="saveButton info" @click="save">Enregistrer</button>&nbsp;
 						<router-link class="routerlink" to="/offline/">
 							<button class="cancelButton">Annuler</button>
 						</router-link>
 					</p>
 				</div>
-
-
+				<div class="dataContainer">
+					<button @click="toggleData(true)" class="button">➕</button> / <button class="button" @click="toggleData(false)" >➖</button>
+					<pre id="data">
+						{{ data }}
+					</pre>
+				</div>
 			</div>
+			
 		</div>
 	</div>
 </template>
@@ -84,6 +89,7 @@ export default defineComponent({
 		save() {
 			//localStorage[this.id] = JSON.stringify(this.data);
 			console.log("saved");
+			console.log("this.data", this.data);
 		},
 		loadScreen(screen) {
 			this.active = screen;
@@ -100,6 +106,13 @@ export default defineComponent({
 					}
 				});*/
 			}, 100);
+		},
+		toggleData(truefalse) {
+			if (truefalse) {
+				$("#data").slideDown();
+			} else {
+				$("#data").slideUp();
+			}
 		}
 	},
 	computed: {
@@ -328,4 +341,12 @@ form h3 {
 	padding-top: 6px;
 	padding-bottom: 6px;
 	padding-left: 6px;
-}</style>
+}
+
+.dataContainer {
+	padding:40px;
+	#data{
+		display: none;
+	}
+} 
+</style>
