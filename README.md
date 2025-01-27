@@ -1,7 +1,20 @@
-# Vue 3 + Vite
+# offline mode for Providence
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Introduction
 
-## Recommended IDE Setup
+This is a simple offline mode for Providence. It is designed to be used in a degraded situation where the main server is out of reach (no internet or server down). It is not a full replacement for the main server, but it should allow users to continue to use the system in a limited capacity.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Features
+
+- **Offline mode**: The system can be used without an internet connection.
+- **Limited functionality**: Not all features are available in offline mode.
+- **Data synchronization**: Data is synchronized with the main server when it is available.
+- **Data storage**: Data is stored locally on the device.
+
+## Installation
+
+1. Clone the repository.
+2. Deploy the dist folder to a web server, in a web root subfolder called "offline".
+3. Deploy the offline widget to the CA Providence installation, where Providence is in a subfolder called "providence" or "gestion". The widget should be deployed in the "app/widgets" folder.
+4. Deploy the offline plugin to the CA Providence installation, where Providence is in a subfolder called "providence" or "gestion". The plugin should be deployed in the "app/plugins" folder.
+
