@@ -77,8 +77,9 @@ export default {
 		// loop through all of the array objects
 		for(let item of objects) {
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
+			item.data.id = item.id;
 			that.data.push(item.data);
-			console.log(item.data);
+			console.log(item);
 			i++;
 		}
 		$('#numresults').html(i);
