@@ -23,7 +23,7 @@
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.title }}</span><br />
-						<a :href="'/offline/edit/' + item.id">{{ item.idno.value }}</a>
+						<a :href="'/offline/object/' + item.id">{{ item.idno.value }}</a>
 						<ul />
 					</div>
 				</div>

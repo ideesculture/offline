@@ -9,7 +9,7 @@
 				</div>
 				<p style="padding:4px 20px;">
 					Objet en cours de modification : <br/>
-					<b>{{ data.preferred_labels }}</b><br/> ({{ data.idno }})
+					<b>{{ data.title }}</b><br/> ({{ data.idno }})
 				</p>
 				<div style="text-align: center;padding:10px;border-bottom:2px solid #eeeeee;">
 					<img class="thumbnail" :src="data._default_representation">
@@ -47,6 +47,7 @@ import { defineComponent, ref, toHandlers } from 'vue';
 import { FormKitSchema } from '@formkit/vue'
 import $ from 'jquery'
 import { db } from '../db'
+import { _settings } from '../_settings'
 
 export default defineComponent({
 	components: {
@@ -105,22 +106,24 @@ export default defineComponent({
 	},
 	mounted() {
 		this.item_id = this.$route.params.id;
-		this._settings = JSON.parse(localStorage["_settings"]);
-		
-		// screen names are inside _settings._editor.ca_objects
-		// we take the first one
-		this.schema = this._settings._editor.ca_objects.schema; //[];
+		this._settings = _settings;
+
 		this.screens = this._settings._editor.ca_objects.screens;
 		this.default = this.screens[0];
+		this.schema = this._settings._editor.ca_objects.schema[0];
 		this.active = this.default;
 
 		this.loadScreen(this.active);
 
 		// load data
 		this.data = db.db_objects.get(this.item_id);
+		console.log(this.item_id);
 		let that = this;
 		db.db_objects.get(this.item_id).then(function (item) {
 			console.log(item);
+			item.data.title = item.data.preferred_labels.fr_FR[0].name;
+			item.data.idno = item.data.idno.value;
+			
 			that.data = item.data;
 			that.formerdata = that.data;
 		});
