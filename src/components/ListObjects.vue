@@ -22,7 +22,7 @@
 							<img v-if="item.default_representation" :src="item.default_representation" />
 							<img v-else src="/noimage.png" style="width:100%" />
 						</div>
-						<span class='ellipsis'>{{ item.preferred_labels }}</span><br />
+						<span class='ellipsis'>{{ item.title }}</span><br />
 						<a :href="'/offline/edit/' + item.id">{{ item.idno.value }}</a>
 						<ul />
 					</div>
@@ -49,8 +49,8 @@ export default {
 		filteredItems() {
 			//console.log(this.data[10].preferred_labels.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
 			return this.data.filter(item => {
-				if(!item.preferred_labels) return false;
-				return item.preferred_labels.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+				if(!item.title) return false;
+				return item.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
 			})
 		},
 		numFilteredItems() {
@@ -68,19 +68,19 @@ export default {
 			}
 		}
 	},	
-	mounted() {
+	async mounted() {
 		$('#content').append($("<ul></ul>"));
 		let that=this;
 		let i = 0;
-		db.db_objects.each(function (item) {
-			let data = JSON.parse(item.data);
-			data.id = item.id;
-			data.type_id = item.type_id;
-			data.preferred_labels = data.preferred_labels.fr_FR[0].name;
-			console.log(data);
-			that.data.push(data);
+		let objects = await db.db_objects.toArray();
+		//console.log(objects);
+		// loop through all of the array objects
+		for(let item of objects) {
+			item.data.title = item.data.preferred_labels.fr_FR[0].name;
+			that.data.push(item.data);
+			console.log(item.data);
 			i++;
-		});
+		}
 		$('#numresults').html(i);
 		console.log(that.data);
 	}
