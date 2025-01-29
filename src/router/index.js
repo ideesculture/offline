@@ -51,6 +51,10 @@ const routes = [{
         name: 'Edit',
         component: Edit2,
     }, {
+        path: '/offline/object/:id',
+        name: 'Edit2',
+        component: Edit2,
+    }, {
         path: '/offline/edit/occurrence/:id',
         name: 'EditOccurrence',
         component: EditOccurrence,
