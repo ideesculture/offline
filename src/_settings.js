@@ -1,4 +1,5 @@
 export const _settings = Object.freeze({
+	_locale: "fr_FR",
     _editor:  {
 		"ca_objects": {
 			"schema": [
@@ -16,60 +17,128 @@ export const _settings = Object.freeze({
 							"children": [
 								{
 									"$el": "h3",
-									"children": "N° d\'inventaire"
+									"children": "Référence IRPA"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.irpa",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Appellation"
+								},
+								{
+									"$formkit": "textarea",
+									"name": "ca_objects.nonpreferred_labels",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Titre"
+								},
+								{
+									"$formkit": "textarea",
+									"name": "title",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Institutions liées"
+								},
+								{
+									"$formkit": "textarea",
+									"name": "ca_entities",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Objet existant"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.objet_present",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Précisions sur la localisation"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.precision_localisation",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Remarques liées au dépôt"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.depot_remarques",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Catégorie"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_list_items",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Matériau (IRPA)"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.materiau",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Technique"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.technique",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Dimensions"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.dimensions",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Etat de conservation"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.etat_conservation",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Date (champs texte)"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.tournai_date",
+									"rows": "3"
+								},{
+									"$el": "h3",
+									"children": "N° automatique"
 								},
 								{
 									"$formkit": "text",
 									"name": "idno",
 									"validation": "required"
-								},
-								{
-									"$el": "h3",
-									"children": "Autres numéros"
-								},
-								{
-									"$formkit": "repeater",
-									"name": "users",
-									"children": [
-										{
-											"$formkit": "text",
-											"name": "autres_numeros",
-											"label": "Autres numéros",
-											"validation": "required"
-										},
-										{
-											"$formkit": "select",
-											"name": "type_numero",
-											"label": "Type de numéro",
-											"options": {
-												"numprod": "numéro de production",
-												"numnum": "numéro de numérisation",
-												"numprov": "numéro provisoire",
-												"ancnum": "ancien numéro",
-												"numedi": "numéro d\'édition",
-												"numsea": "numéro séance",
-												"numvue": "numéro de la vue",
-												"numaut": "numéro auteur",
-												"numase": "numéro auteur séance",
-												"numavu": "numéro auteur vue",
-												"numres": "numéro de résolution"
-											}
-										},
-										{
-											"$formkit": "text",
-											"name": "remarques",
-											"label": "Remarques"
-										}
-									]
-								},
-								{
-									"$el": "h3",
-									"children": "Description"
-								},
-								{
-									"$formkit": "textarea",
-									"name": "description",
-									"rows": "3"
 								}
 							]
 						}

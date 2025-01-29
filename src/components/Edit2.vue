@@ -123,7 +123,30 @@ export default defineComponent({
 			console.log(item);
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
 			item.data.idno = item.data.idno.value;
-			
+			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
+			item.data['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
+
+			// Storage simplification
+			let target = 'objet_present';
+			item.data['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+
+			// Etat de conservation
+			target = 'etat_conservation';
+			item.data['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
+
+			let targets = ['ca_objects.precision_localisation', 'ca_objects.technique', 'ca_objects.materiau', 'ca_objects.tournai_date', 'ca_objects.depot_remarques'];
+			targets.forEach(function(target) {
+				// if target starts with ca_objects...
+				if(target.startsWith('ca_objects.')) {
+					// if we don't have the metadata, don't try to access it
+					if(!item.data[target]) return;
+					// get the last part of the target
+					target = target.split('.').pop();
+					// get the first element of the object
+					item.data['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+				}
+			});
+			// get first element of object
 			that.data = item.data;
 			that.formerdata = that.data;
 		});
