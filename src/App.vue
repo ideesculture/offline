@@ -28,7 +28,7 @@ export default {
 <template>
   <div class="navbarContainer">
 		<div class="navbar">
-			<div id="logo"><img src="/menu_logo.png" /></div>
+			<div id="logo"><img src="/offline/menu_logo.png" /></div>
 			<div id="items">
 				<div class="menu" @click="toggleSearchMenu" style="padding-right:50px">CHERCHER
 					<div class="menu-content" style="display: none;">
