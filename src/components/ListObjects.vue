@@ -20,7 +20,7 @@
 					<div v-for="item in filteredItems">
 						<div class="thumbnail-image"> 
 							<img v-if="item.default_representation" :src="item.default_representation" />
-							<img v-else src="/offline/noimage.png" style="width:100%" />
+							<img v-else src="/public/noimage.png" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.title }}</span><br />
 						<a :href="'/offline/object/' + item.id">{{ item.idno.value }}</a>
@@ -79,7 +79,7 @@ export default {
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
 			item.data.id = item.id;
 			// loop through all item.data.representations
-			item.data.default_representation = "/offline/noimage.png";
+			item.data.default_representation = "/public/noimage.png";
 			if(item.data.representations !== undefined) {
 				Object.values(item.data.representations).forEach(function(value) {
 					if (value.is_primary == "1") {
