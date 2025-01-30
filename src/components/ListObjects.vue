@@ -78,6 +78,20 @@ export default {
 		for(let item of objects) {
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
 			item.data.id = item.id;
+			// loop through all item.data.representations
+			item.data.default_representation = "/noimage.png";
+			if(item.data.representations !== undefined) {
+				Object.values(item.data.representations).forEach(function(value) {
+					if (value.is_primary == "1") {
+						console.log(value.urls.preview170);
+						item.data.default_representation = value.urls.preview170;
+						// if the url contains ".lescollections.test", replace it with ".lescollections.be"
+						item.data.default_representation = item.data.default_representation.replace(".lescollections.test", ".lescollections.be");
+						// we only need the first one
+						//return;
+					}
+				});
+			}
 			that.data.push(item.data);
 			console.log(item);
 			i++;
