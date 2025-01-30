@@ -62,6 +62,7 @@ import { FormKitSchema } from '@formkit/vue'
 import $ from 'jquery'
 import { db } from '../db'
 import { _settings } from '../_settings'
+import { DeepDiff } from 'deep-diff';
 
 export default defineComponent({
 	components: {
@@ -70,9 +71,9 @@ export default defineComponent({
 	data() {
 		return {
 			dataHasChanged: false,
-			data: {},
-			edit: {},
-			formerdata: {},
+			data: {}, // original data
+			edit: {}, // editable data
+			_edit: {}, // copy of the original data, as an editable to make comparison
 			_settings:{},
 			schema: [],
 			id: this.$route.params.id,
@@ -96,12 +97,18 @@ export default defineComponent({
 		onChange(event) {
 			this.data = event.data;
 		},
-		async save() {
+		save() {
 			//localStorage[this.id] = JSON.stringify(this.data);
 			let that = this;
-			let dataToSave = await that.data;
-			await db.db_objects.get(this.item_id).then(async function (item) {
-				let result = db.db_objects.update(that.item_id, {data: dataToSave});
+			let edit = JSON.parse(JSON.stringify(that.edit));
+			db.db_objects.get(this.item_id).then(function (item) {
+				let result = db.db_objects.update(that.item_id, {edit: edit});
+				console.log(result);
+				return true;
+			});
+			let _edit = JSON.parse(JSON.stringify(that._edit));
+			db.db_objects.get(this.item_id).then(function (item) {
+				let result = db.db_objects.update(that.item_id, {_edit: _edit});
 				console.log(result);
 				return true;
 			});
@@ -239,19 +246,28 @@ export default defineComponent({
 			}
 			// get first element of object
 			that.data = item.data;
-			//that.edit = that.edit;
-			that.data._edit = that.edit;
-			that.data.edit = that.edit;
+
+			// copy the object
+			that._edit = Object.assign({}, that.edit);
+
 		});
 		console.log(that.data);
 	},
 	watch: {
 		'edit': function() {
-			if(this.edit != this._edit) {
+			//console.log("edit", this.edit);
+			//console.log("_edit", this._edit);
+			let modifications = DeepDiff(this.edit, this._edit);
+			if(modifications) {
 				console.log("data has changed");
+				console.log("modifications", modifications);
 				this.saveDisabled = false;
+				this.dataHasChanged = true;
+			} else {
+				console.log("data has not changed");
+				this.saveDisabled = true;
+				this.dataHasChanged = false;
 			}
-			//this.dataHasChanged = true;
 		}
 	}
 });
