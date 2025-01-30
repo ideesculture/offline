@@ -12,7 +12,7 @@
 					<b>{{ data.title }}</b><br/> ({{ data.idno }})
 				</p>
 				<div style="text-align: center;padding:10px;border-bottom:2px solid #eeeeee;">
-					<img class="thumbnail" :src="data.default_representation">
+					<img class="thumbnail" :src="edit.default_representation">
 				</div>
 				<div class="screens">
 					<div v-for="screen in screens" :class="((screen == active) ? 'active ' : '') + 'screen'" @click="loadScreen(screen)">
@@ -30,7 +30,7 @@
 				<div class="medias_container">
 					<h3>MEDIA</h3>
 					<div style="border:1px solid black;border-radius: 0.25em;padding:6px;">
-						<span v-for="offline_representation in data.offline_representations">
+						<span v-for="offline_representation in edit.offline_representations">
 							<img :src="offline_representation" style="display:inline-block;width:100px;height:100px;margin:4px;" />
 						</span>
 					</div>
@@ -71,6 +71,7 @@ export default defineComponent({
 		return {
 			dataHasChanged: false,
 			data: {},
+			edit: {},
 			formerdata: {},
 			_settings:{},
 			schema: [],
@@ -156,37 +157,37 @@ export default defineComponent({
 		console.log(this.item_id);
 		let that = this;
 		db.db_objects.get(this.item_id).then(function (item) {
-			console.log(item);
-			if(!item.edit) {
-				item.edit = {};
+			//console.log(item);
+			if(!that.edit) {
+				that.edit = {};
 			}
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
-			item.edit.title = item.data.title;
+			that.edit.title = item.data.title;
 			item.data.idno = item.data.idno.value;
-			item.edit.idno = item.data.idno.value;
+			that.edit.idno = item.data.idno.value;
 
 			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
-			item.edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
+			that.edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
 
 			// Storage simplification
 			let target = 'objet_present';
-			item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
 
 			// Etat de conservation : simple
 			target = 'etat_conservation';
-			item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
+			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
 
 			// Etat de conservation : simple
 			target = 'code_fabrique';
-			item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["code_fabrique"];
+			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["code_fabrique"];
 
 			// Etat de conservation : simple
 			target = 'depot_remarques';
-			item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["depot_remarques"];
+			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["depot_remarques"];
 			
 			// Matériau : simple
 			target = 'materiau';
-			item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["materiau"];
+			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["materiau"];
 
 			// Techniques : répétable
 			target = 'cipar_techniques';
@@ -194,7 +195,7 @@ export default defineComponent({
 			Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
 				temp.push({cipar_techniques : value[_settings._locale][target]});
 			});
-			item.edit['ca_objects.'+target] = temp;
+			that.edit['ca_objects.'+target] = temp;
 
 			// Dimensions : répétable
 			target = 'dimensions';
@@ -203,7 +204,7 @@ export default defineComponent({
 				//console.log(value[_settings._locale]);
 				temp.push(value[_settings._locale]);
 			});
-			item.edit['ca_objects.'+target] = temp;
+			that.edit['ca_objects.'+target] = temp;
 
 			let targets = ['ca_objects.precision_localisation', 'ca_objects.materiau', 'ca_objects.tournai_date'
 			];
@@ -215,38 +216,38 @@ export default defineComponent({
 					// get the last part of the target
 					target = target.split('.').pop();
 					// get the first element of the object
-					if(!item.edit['ca_objects.'+target]) {
-						item.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+					if(!that.edit['ca_objects.'+target]) {
+						that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
 					}
 				}
 			});
 
 			if(item.data.representations !== undefined) {
-				item.edit.offline_representations = [];
+				that.edit.offline_representations = [];
 				let temp = null;
 				Object.values(item.data.representations).forEach(function(value) {
 					if (value.is_primary == "1") {
 						console.log(value.urls.preview170);
-						item.edit.default_representation = value.urls.preview170;
+						that.edit.default_representation = value.urls.preview170;
 						// if the url contains ".lescollections.test", replace it with ".lescollections.be"
-						item.edit.default_representation = item.data.default_representation.replace(".lescollections.test", ".lescollections.be");
-						// we only need the first one
-						//return;
+						that.edit.default_representation = that.edit.default_representation.replace(".lescollections.test", ".lescollections.be");
 					}
 					temp = value.urls.preview170;
 					// if the url contains ".lescollections.test", replace it with ".lescollections.be"
-					item.edit.offline_representations.push(temp.replace(".lescollections.test", ".lescollections.be"));
+					that.edit.offline_representations.push(temp.replace(".lescollections.test", ".lescollections.be"));
 				});
 			}
 			// get first element of object
 			that.data = item.data;
-			that.formerdata = that.data;
+			//that.edit = that.edit;
+			that.data._edit = that.edit;
+			that.data.edit = that.edit;
 		});
-		
+		console.log(that.data);
 	},
 	watch: {
-		'data': function() {
-			if(this.data != this.formerdata) {
+		'edit': function() {
+			if(this.edit != this._edit) {
 				console.log("data has changed");
 				this.saveDisabled = false;
 			}
