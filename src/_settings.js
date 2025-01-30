@@ -12,7 +12,7 @@ export const _settings = Object.freeze({
 						{
 							"$el": "section",
 							"attrs": {
-								"class": "Identification"
+								"class": "Saisie objets"
 							},
 							"children": [
 								{
@@ -21,8 +21,7 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$formkit": "text",
-									"name": "ca_objects.irpa",
-									"validation": "required"
+									"name": "ca_objects.irpa"
 								},
 								{
 									"$el": "h3",
@@ -47,7 +46,7 @@ export const _settings = Object.freeze({
 									"children": "Institutions liées"
 								},
 								{
-									"$formkit": "textarea",
+									"$formkit": "text",
 									"name": "ca_entities",
 									"rows": "3"
 								},
@@ -101,18 +100,56 @@ export const _settings = Object.freeze({
 									"children": "Technique"
 								},
 								{
-									"$formkit": "text",
-									"name": "ca_objects.technique",
-									"rows": "3"
+									"$formkit": "repeater",
+									"name": "ca_objects.cipar_techniques",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'cipar_techniques'
+										}
+									]
 								},
 								{
 									"$el": "h3",
 									"children": "Dimensions"
 								},
 								{
-									"$formkit": "text",
+									"$formkit": "repeater",
 									"name": "ca_objects.dimensions",
-									"rows": "3"
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'hauteur',
+										  help: 'Hauteur'
+										},
+										{
+											$formkit: 'text',
+											name: 'largeur',
+											help: 'Largeur'
+										},
+										{
+											$formkit: 'text',
+											name: 'profondeur',
+											help: 'Profondeur'
+										},
+										{
+											$formkit: 'text',
+											name: 'diametre',
+											help: 'Diamètre'
+										},
+										{
+											$formkit: 'text',
+											name: 'poids',
+											help: 'Poids'
+										},
+										{
+											$formkit: 'text',
+											name: 'measurement_notes',
+											help: 'Notes'
+										}
+									]
 								},
 								{
 									"$el": "h3",
@@ -141,13 +178,101 @@ export const _settings = Object.freeze({
 									"validation": "required"
 								}
 							]
+						},
+						{
+							"$el": "section",
+							"attrs": {
+								"class": "Infos admin"
+							},
+							"children": [
+								{
+									"$el": "h3",
+									"children": "Code Fabrique"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.code_fabrique"
+								},
+								{
+									"$el": "h3",
+									"children": "code_eglise_prec"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.code_eglise_prec",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Numéro auto"
+								},
+								{
+									"$formkit": "text",
+									"name": "idno",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Ancien numéro de référence"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.ancien_num_reference",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Bien classé Trésor"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.bien_classe_tresor",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Bien d'intérêt patrimonial"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.bien_interet_patrimonial",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Bien à protéger"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.bien_a_proteger",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Bien culturel"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.bien_culturel",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Plan d'urgence"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.plan_urgence",
+									"validation": "required"
+								}
+							]
 						}
 					]
 				}
 			],
 			"screens": [
-				"Identification",
-				"Description"
+				"Saisie objets",
+				"Infos admin"
 			]
 		}
 	}
