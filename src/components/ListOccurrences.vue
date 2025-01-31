@@ -37,7 +37,7 @@ import { ref } from 'vue'
 import $ from 'jquery'
 import {db} from '../db'
 
-const noimage = '<svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194.61 130.61"><defs><style>.cls-1 {fill: #676767;}</style></defs><g id="Calque_1-2" data-name="Calque 1"><g><path class="cls-1" d="M194.61,0v130.61H0V0h194.61ZM189.12,5.48H6.24l-.75.75v101.44l58.13-56.85,50.47,49.83,35.36-34.38,39.67,38.9V5.48Z"/><ellipse class="cls-1" cx="123.09" cy="43.03" rx="14.26" ry="14.25"/></g></g></svg>';
+const noimage = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FscXVlXzIiIGRhdGEtbmFtZT0iQ2FscXVlIDIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE5NC42MSAxMzAuNjEiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6ICM2NzY3Njc7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnIGlkPSJDYWxxdWVfMS0yIiBkYXRhLW5hbWU9IkNhbHF1ZSAxIj4KICAgIDxnPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOTQuNjEsMHYxMzAuNjFIMFYwaDE5NC42MVpNMTg5LjEyLDUuNDhINi4yNGwtLjc1Ljc1djEwMS40NGw1OC4xMy01Ni44NSw1MC40Nyw0OS44MywzNS4zNi0zNC4zOCwzOS42NywzOC45VjUuNDhaIi8+CiAgICAgIDxlbGxpcHNlIGNsYXNzPSJjbHMtMSIgY3g9IjEyMy4wOSIgY3k9IjQzLjAzIiByeD0iMTQuMjYiIHJ5PSIxNC4yNSIvPgogICAgPC9nPgogIDwvZz4KPC9zdmc+';
 
 export default {
 	data() {
