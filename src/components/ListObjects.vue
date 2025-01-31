@@ -20,7 +20,9 @@
 					<div v-for="item in filteredItems">
 						<div class="thumbnail-image"> 
 							<img v-if="item.default_representation" :src="item.default_representation" />
-							<img v-else :src="noimage" style="width:100%" />
+							<div v-else style="width:100%">
+								{{ noimage }}
+							</div>
 						</div>
 						<span class='ellipsis'>{{ item.title }}</span><br />
 						<a :href="'/offline/object/' + item.id">{{ item.idno.value }}</a>
@@ -37,7 +39,7 @@ import { ref } from 'vue'
 import $ from 'jquery'
 import {db} from '../db'
 
-const noimage = '<?xml version="1.0" encoding="UTF-8"?><svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194.61 130.61"><defs><style>.cls-1 {fill: #676767;}</style></defs><g id="Calque_1-2" data-name="Calque 1"><g><path class="cls-1" d="M194.61,0v130.61H0V0h194.61ZM189.12,5.48H6.24l-.75.75v101.44l58.13-56.85,50.47,49.83,35.36-34.38,39.67,38.9V5.48Z"/><ellipse class="cls-1" cx="123.09" cy="43.03" rx="14.26" ry="14.25"/></g></g></svg>';
+const noimage = '<svg id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 194.61 130.61"><defs><style>.cls-1 {fill: #676767;}</style></defs><g id="Calque_1-2" data-name="Calque 1"><g><path class="cls-1" d="M194.61,0v130.61H0V0h194.61ZM189.12,5.48H6.24l-.75.75v101.44l58.13-56.85,50.47,49.83,35.36-34.38,39.67,38.9V5.48Z"/><ellipse class="cls-1" cx="123.09" cy="43.03" rx="14.26" ry="14.25"/></g></g></svg>';
 
 export default {
 	data() {
