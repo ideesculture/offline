@@ -21,6 +21,9 @@
 					<div class="screen" @click="loadMediaScreen()">
 						MEDIA
 					</div>
+					<div class="screen" @click="loadModificationsScreen()">
+						LOG EN ATTENTE
+					</div>
 				</div>
 			</div>
 			<div class="col4">
@@ -33,6 +36,29 @@
 						<span v-for="offline_representation in edit.offline_representations">
 							<img :src="offline_representation" style="display:inline-block;width:100px;height:100px;margin:4px;" />
 						</span>
+					</div>
+				</div>
+				<div class="modifications_container" v-if="modifications">
+					<h3>LOG DES MODIFICATIONS EN ATTENTE</h3>
+					<div style="border:1px solid black;border-radius: 0.25em;padding:6px;">
+						<table style="width:100%;">
+							<tr>
+								<th style="width:100px">Modification</th>
+								<th style="width:100px">Path</th>
+								<th>Avant</th>
+								<th>Après</th>
+							</tr>
+							<tr v-for="modification in modifications">
+								<template v-if="modification.kind == 'A'">
+								</template>
+								<template v-else>
+									<td>{{ modification.kind }}</td>
+									<td>{{ modification.path }}</td>
+									<td>{{ modification.lhs }}</td>
+									<td>{{ modification.rhs }}</td>
+								</template>
+							</tr>
+						</table>
 					</div>
 				</div>
 
@@ -57,12 +83,15 @@
 </template>
 
 <script>
-import { defineComponent, ref, toHandlers } from 'vue';
+import { defineComponent, ref, toHandlers, isProxy, toRaw } from 'vue';
 import { FormKitSchema } from '@formkit/vue'
+import { _ } from 'lodash'
 import $ from 'jquery'
 import { db } from '../db'
 import { _settings } from '../_settings'
 import { DeepDiff } from 'deep-diff';
+
+var edit = {};
 
 export default defineComponent({
 	components: {
@@ -72,7 +101,7 @@ export default defineComponent({
 		return {
 			dataHasChanged: false,
 			data: {}, // original data
-			edit: {}, // editable data
+			edit: {}, // editable data,
 			_edit: {}, // copy of the original data, as an editable to make comparison
 			_settings:{},
 			schema: [],
@@ -82,34 +111,28 @@ export default defineComponent({
 			active: "",
 			activeStep: "first",
 			saveDisabled: true,
-			screens:[]
+			screens:[],
+			watchEdit: true,
+			modifications: []
 		}
 	},
 	methods: {
-		machin(text) {
-			console.log("machin");
-			console.log(text);
-		},
-		register(thisdata) {
-			console.log("register");
-			console.log(thisdata);
-		},
 		onChange(event) {
 			this.data = event.data;
 		},
-		save() {
+		async save() {
 			//localStorage[this.id] = JSON.stringify(this.data);
 			let that = this;
-			let edit = JSON.parse(JSON.stringify(that.edit));
-			db.db_objects.get(this.item_id).then(function (item) {
-				let result = db.db_objects.update(that.item_id, {edit: edit});
-				console.log(result);
+			let editToSave = JSON.parse(JSON.stringify(that.edit));
+			await db.db_objects.get(this.item_id).then(function (item) {
+				let result = db.db_objects.update(that.item_id, {edit: editToSave});
+				console.log("result", result);
 				return true;
 			});
-			let _edit = JSON.parse(JSON.stringify(that._edit));
-			db.db_objects.get(this.item_id).then(function (item) {
-				let result = db.db_objects.update(that.item_id, {_edit: _edit});
-				console.log(result);
+			let _editToSave = JSON.parse(JSON.stringify(that._edit));
+			await db.db_objects.get(this.item_id).then(function (item) {
+				let result = db.db_objects.update(that.item_id, {_edit: _editToSave});
+				console.log("result", result);
 				return true;
 			});
 			console.log("saved");
@@ -120,6 +143,7 @@ export default defineComponent({
 			//this.data.activeStep = "first";
 			let that=this;
 			$(".medias_container").hide();
+			$(".modifications_container").hide();
 			// Jquery needs a small time to be able to find the elements
 			setTimeout(function() {
 				$(".formkitContainer section").each(function() {
@@ -133,8 +157,6 @@ export default defineComponent({
 		},
 		loadMediaScreen() {
 			this.active = "media";
-			// set the current screen schema & uischema
-			//this.data.activeStep = "first";
 			let that=this;
 			// Jquery needs a small time to be able to find the elements
 			setTimeout(function() {
@@ -142,13 +164,28 @@ export default defineComponent({
 				$(".formkitContainer section").each(function() {
 					$(this).hide();
 				});
+				$('.modifications_container').hide();
+			}, 100);
+		},
+		loadModificationsScreen() {
+			this.active = "modifications";
+			let that=this;
+			// Jquery needs a small time to be able to find the elements
+			setTimeout(function() {
+				$(".medias_container").hide();
+				$(".formkitContainer section").each(function() {
+					$(this).hide();
+				});
+				$('.modifications_container').show();
 			}, 100);
 		}
 	},
 	computed: {
 		
 	},
-	mounted() {
+	async mounted() {
+		console.log("mounted");
+		this.edit = {};
 		this.item_id = this.$route.params.id;
 		this._settings = _settings;
 
@@ -163,55 +200,66 @@ export default defineComponent({
 		this.data = db.db_objects.get(this.item_id);
 		console.log(this.item_id);
 		let that = this;
-		db.db_objects.get(this.item_id).then(function (item) {
-			//console.log(item);
-			if(!that.edit) {
-				that.edit = {};
+		let result = await db.db_objects.get(this.item_id).then(function (item) {
+			console.log(item.edit);
+			if(item.edit !== undefined) {
+				console.log("item.edit", item.edit);
+				// this object has already been edited
+				edit = item.edit;
+				return true;
 			}
+			//console.log(item);
+
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
-			that.edit.title = item.data.title;
+			edit.title = item.data.title;
+
 			item.data.idno = item.data.idno.value;
-			that.edit.idno = item.data.idno.value;
+			edit.idno = item.data.idno.value;
 
 			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
-			that.edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
+			edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
 
 			// Storage simplification
 			let target = 'objet_present';
-			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
 
 			// Etat de conservation : simple
 			target = 'etat_conservation';
-			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
+			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
 
 			// Etat de conservation : simple
 			target = 'code_fabrique';
-			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["code_fabrique"];
+			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["code_fabrique"];
+
 
 			// Etat de conservation : simple
 			target = 'depot_remarques';
-			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["depot_remarques"];
+			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["depot_remarques"];
 			
 			// Matériau : simple
 			target = 'materiau';
-			that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["materiau"];
+			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["materiau"];
 
 			// Techniques : répétable
 			target = 'cipar_techniques';
 			let temp = [];
-			Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
-				temp.push({cipar_techniques : value[_settings._locale][target]});
-			});
-			that.edit['ca_objects.'+target] = temp;
+			if(item.data['ca_objects.'+target] && typeof item.data['ca_objects.'+target] === 'object') {
+				Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
+					temp.push({cipar_techniques : value[_settings._locale][target]});
+				});
+			}
+			edit['ca_objects.'+target] = temp;
 
 			// Dimensions : répétable
 			target = 'dimensions';
 			temp = [];
 			Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
 				//console.log(value[_settings._locale]);
-				temp.push(value[_settings._locale]);
+				temp.push(toRaw(value[_settings._locale]));
+				console.log("toRaw(value[_settings._locale])", toRaw(value[_settings._locale]));
 			});
-			that.edit['ca_objects.'+target] = temp;
+			//console.log("temp", temp);
+			edit['ca_objects.'+target] = temp;
 
 			let targets = ['ca_objects.precision_localisation', 'ca_objects.materiau', 'ca_objects.tournai_date'
 			];
@@ -223,51 +271,84 @@ export default defineComponent({
 					// get the last part of the target
 					target = target.split('.').pop();
 					// get the first element of the object
-					if(!that.edit['ca_objects.'+target]) {
-						that.edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+					if(!edit['ca_objects.'+target]) {
+						edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
 					}
 				}
 			});
 
 			if(item.data.representations !== undefined) {
-				that.edit.offline_representations = [];
+				edit.offline_representations = [];
 				let temp = null;
 				Object.values(item.data.representations).forEach(function(value) {
 					if (value.is_primary == "1") {
 						console.log(value.urls.preview170);
-						that.edit.default_representation = value.urls.preview170;
+						edit.default_representation = value.urls.preview170;
+
 						// if the url contains ".lescollections.test", replace it with ".lescollections.be"
-						that.edit.default_representation = that.edit.default_representation.replace(".lescollections.test", ".lescollections.be");
+						edit.default_representation = edit.default_representation.replace(".lescollections.test", ".lescollections.be");
 					}
 					temp = value.urls.preview170;
 					// if the url contains ".lescollections.test", replace it with ".lescollections.be"
-					that.edit.offline_representations.push(temp.replace(".lescollections.test", ".lescollections.be"));
+					edit.offline_representations.push(temp.replace(".lescollections.test", ".lescollections.be"));
 				});
 			}
 			// get first element of object
 			that.data = item.data;
 
 			// copy the object
-			that._edit = Object.assign({}, that.edit);
-
+			return true;
 		});
-		console.log(that.data);
+
+		// Clone edit object into that.edit, but removing all the references
+		that.edit = JSON.parse(JSON.stringify(edit));
+		that._edit = JSON.parse(JSON.stringify(edit));
 	},
 	watch: {
-		'edit': function() {
-			//console.log("edit", this.edit);
-			//console.log("_edit", this._edit);
-			let modifications = DeepDiff(this.edit, this._edit);
-			if(modifications) {
-				console.log("data has changed");
-				console.log("modifications", modifications);
-				this.saveDisabled = false;
-				this.dataHasChanged = true;
-			} else {
-				console.log("data has not changed");
-				this.saveDisabled = true;
-				this.dataHasChanged = false;
-			}
+		'edit': async function() {
+				var _edited = {};
+				// loop through all the keys of this.edit
+				for (var key in this.edit) {
+					//loop through all the keys of this.edit, and compare them with the keys of global var edit
+					// if the key is in the global var edit, add it to the _edited object
+					// do this to avoid fetching an empty property at the beginning
+					if (edit.hasOwnProperty(key)) {
+						_edited[key] = toRaw(this.edit[key]);
+					} else {
+						//console.log("!edit.hasOwnProperty(key)", key);
+						if(this.edit[key] !== undefined) {
+							_edited[key] = toRaw(this.edit[key]);
+						}
+					}
+				}
+
+				let modifications = DeepDiff(edit, _edited);
+
+				console.log("here", DeepDiff(edit["ca_objects.dimensions"], _edited["ca_objects.dimensions"]));
+
+				if(modifications) {
+					this.modifications = [];
+					//loop through all keys of modifications
+					for (var key in modifications) {
+						// push modifications to display
+						if(modifications[key].kind == "A") {
+							// Array
+							//this.modifications.push({kind:modifications[key].kind, path:modifications[key].path, lhs:modifications[key].lhs, rhs:modifications[key].rhs});
+							console.log("Array", modifications[key].item);
+							this.modifications.push({kind:"A"+modifications[key].item.kind, path:modifications[key].path.join(".")+"."+modifications[key].index, lhs:"", rhs:JSON.stringify(modifications[key].item.rhs)});
+						} else {
+							this.modifications.push({kind:modifications[key].kind, path:modifications[key].path.join("."), lhs:modifications[key].lhs, rhs:modifications[key].rhs});
+						}
+						
+					}
+					this.saveDisabled = false;
+					this.dataHasChanged = true;
+				} else {
+					this.modifications = [];
+					//console.log("data has not changed");
+					this.saveDisabled = true;
+					this.dataHasChanged = false;
+				}	
 		}
 	}
 });
@@ -339,6 +420,7 @@ div.formkit-outer {
 	max-width: 100%;
 }
 form h3,
+.modifications_container h3,
 .medias_container h3 {
 	background: #21b6c9;
     color: white;
@@ -363,7 +445,12 @@ form h3,
 	padding-bottom:6px;
 	padding-left:6px;
 }
-.medias_container {
+.medias_container,
+.modifications_container {
 	padding: 10px 40px;
+}
+table tr th {
+	background-color: transparent;
+	border-bottom: #21b6c9 1px solid;
 }
 </style>
