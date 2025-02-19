@@ -17,15 +17,22 @@ export const _settings = Object.freeze({
 							"children": [
 								{
 									"$el": "h3",
-									"children": "Référence IRPA"
+									"children": "Appellation"
 								},
 								{
-									"$formkit": "text",
-									"name": "ca_objects.irpa"
+									"$formkit": "repeater",
+									"name": "ca_objects.preferred_labels",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'name'
+										}
+									]
 								},
 								{
 									"$el": "h3",
-									"children": "Appellation"
+									"children": "Titre"
 								},
 								{
 									"$formkit": "textarea",
@@ -34,21 +41,19 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$el": "h3",
-									"children": "Titre"
-								},
-								{
-									"$formkit": "textarea",
-									"name": "title",
-									"rows": "3"
-								},
-								{
-									"$el": "h3",
-									"children": "Institutions liées"
+									"children": "Référence IRPA"
 								},
 								{
 									"$formkit": "text",
-									"name": "ca_entities",
-									"rows": "3"
+									"name": "ca_objects.irpa"
+								},
+								{
+									"$el": "h3",
+									"children": "Lien images IRPA"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.ref_image_irpa"
 								},
 								{
 									"$el": "h3",
@@ -58,6 +63,21 @@ export const _settings = Object.freeze({
 									"$formkit": "text",
 									"name": "ca_objects.objet_present",
 									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Localisation"
+								},
+								{
+									"$formkit": "repeater",
+									"name": "ca_storage_locations",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'name'
+										}
+									]
 								},
 								{
 									"$el": "h3",
@@ -79,13 +99,30 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$el": "h3",
-									"children": "Catégorie"
+									"children": "Type d'objet IRPA"
 								},
 								{
 									"$formkit": "text",
-									"name": "ca_list_items",
+									"name": "ca_objects.irpa_objet_type",
 									"rows": "3"
 								},
+								
+								{
+									"$el": "h3",
+									"children": "Catégorie"
+								},
+								{
+									"$formkit": "repeater",
+									"name": "ca_list_items",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'name_singular'
+										}
+									]
+								},
+								
 								{
 									"$el": "h3",
 									"children": "Matériau (IRPA)"
@@ -153,6 +190,15 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$el": "h3",
+									"children": "Dimensions (IRPA)"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.irpa_dimensions",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
 									"children": "Etat de conservation"
 								},
 								{
@@ -162,13 +208,48 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$el": "h3",
-									"children": "Date (champs texte)"
+									"children": "Auteur"
+								},
+								{
+									"$formkit": "repeater",
+									"name": "ca_entities",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'displayname'
+										}
+									]
+								},
+								{
+									"$el": "h3",
+									"children": "Datation"
 								},
 								{
 									"$formkit": "text",
 									"name": "ca_objects.tournai_date",
 									"rows": "3"
-								},{
+								},
+								{
+									"$el": "h3",
+									"children": "Datation (IRPA)"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.date",
+									"rows": "3"
+								},
+								{
+									"$el": "h3",
+									"children": "Remarques"
+								},
+								{
+									"$formkit": "textarea",
+									"name": "ca_objects.internal_notes",
+									"rows": "10"
+								},
+								
+								{
 									"$el": "h3",
 									"children": "N° automatique"
 								},
@@ -259,6 +340,15 @@ export const _settings = Object.freeze({
 								{
 									"$el": "h3",
 									"children": "Plan d'urgence"
+								},
+								{
+									"$formkit": "text",
+									"name": "ca_objects.plan_urgence",
+									"validation": "required"
+								},
+								{
+									"$el": "h3",
+									"children": "Fiche fantôme"
 								},
 								{
 									"$formkit": "text",

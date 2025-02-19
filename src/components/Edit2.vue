@@ -67,12 +67,12 @@
 						<FormKitSchema :schema="schema" />
   					</FormKit>
 					
-				<p>
-					<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
-					<router-link class="routerlink" to="/offline/">
-						<button class="cancelButton">Annuler</button>
-					</router-link>
-				</p>
+					<p>
+						<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
+						<router-link class="routerlink" to="/offline/">
+							<button class="cancelButton">Annuler</button>
+						</router-link>
+					</p>
 				</div>
 
 				  
@@ -214,35 +214,57 @@ export default defineComponent({
 			edit.title = item.data.title;
 
 			item.data.idno = item.data.idno.value;
-			edit.idno = item.data.idno.value;
+			edit.idno = item.data.idno;
 
 			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
-			edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
+			console.log("item.data", item.data);
+			let temp_value = "";
+			let temp = [];
 
-			// Storage simplification
-			let target = 'objet_present';
-			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale][target];
+			if(item.data.nonpreferred_labels) {
+				edit['ca_objects.nonpreferred_labels'] = item.data.nonpreferred_labels[_settings._locale][0].name;
+				console.log("nonpreferred_labels", item.data.nonpreferred_labels[_settings._locale][0].name);
+			}
 
-			// Etat de conservation : simple
-			target = 'etat_conservation';
-			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["etat"];
+			if(item.data.preferred_labels) {
+				temp = [];
+				item.data.preferred_labels[_settings._locale].forEach(function(value) {
+					console.log("value.name", value.name);
+					temp.push({name : value.name});
+				});
+			}
+			edit['ca_objects.preferred_labels'] = temp;
 
-			// Etat de conservation : simple
-			target = 'code_fabrique';
-			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["code_fabrique"];
+			let conteneurs_targets = [
+				{conteneur: 'objet_present', target: 'objet_present'},
+				{conteneur: 'irpa', target: 'irpa'},
+				{conteneur: 'etat_conservation', target: 'etat'},
+				{conteneur: 'code_fabrique', target: 'code_fabrique'},
+				{conteneur: 'depot_remarques', target: 'depot_remarques'},
+				{conteneur: 'materiau', target: 'materiau'},
+				{conteneur: 'exemple_numero_auto', target: 'exemple_numero_auto'},
+				{conteneur: 'ref_image_irpa', target: 'ref_image_irpa'},
+				{conteneur: 'irpa_dimensions', target: 'irpa_dimensions'},
+				{conteneur: 'irpa_objet_type', target: 'irpa_objet_type'},
+				{conteneur: 'internal_notes', target: 'internal_notes'},
+				{conteneur: 'ancien_num_reference', target: 'ancien_num_reference'}
+			];
 
+			temp_value = "";
+			conteneurs_targets.forEach(function(conteneur_target) {
+				if(item.data['ca_objects.'+conteneur_target.conteneur]) {
+					temp_value = Object.values(item.data['ca_objects.'+conteneur_target.conteneur])[0][_settings._locale][conteneur_target.target];
+					if(temp_value) {
+						edit['ca_objects.'+conteneur_target.target] = temp_value.replace(/<br[\s]\/>/gm, "");
+					}
+					
+				}
+			});
 
-			// Etat de conservation : simple
-			target = 'depot_remarques';
-			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["depot_remarques"];
-			
-			// Matériau : simple
-			target = 'materiau';
-			edit['ca_objects.'+target] = Object.values(item.data['ca_objects.'+target])[0][_settings._locale]["materiau"];
 
 			// Techniques : répétable
-			target = 'cipar_techniques';
-			let temp = [];
+			let target = 'cipar_techniques';
+			
 			if(item.data['ca_objects.'+target] && typeof item.data['ca_objects.'+target] === 'object') {
 				Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
 					temp.push({cipar_techniques : value[_settings._locale][target]});
@@ -250,14 +272,38 @@ export default defineComponent({
 			}
 			edit['ca_objects.'+target] = temp;
 
+			target = "date";
+			if(item.data['ca_objects.date']) {
+				edit['ca_objects.date'] = Object.values(item.data['ca_objects.date'])[0][_settings._locale]["dates_value"];
+			}
+
+			// Relations répétables
+			let relations_targets = [
+				{relation: 'ca_entities', target: 'displayname'},
+				{relation: 'ca_storage_locations', target: 'name'},
+				{relation: 'ca_list_items', target: 'name_singular'}
+			]
+			relations_targets.forEach(function(relation_target) {
+				temp = [];
+				if(item.data['related'][relation_target["relation"]]) {
+					Object.values(item.data['related'][relation_target['relation']]).forEach(function(value) {
+						temp.push({[relation_target['target']] : value[relation_target['target']]});
+					});
+				}
+				edit[relation_target["relation"]] = temp;
+			});
+
 			// Dimensions : répétable
 			target = 'dimensions';
 			temp = [];
-			Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
+			if(item.data['ca_objects.'+target]) {$
+				Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
 				//console.log(value[_settings._locale]);
 				temp.push(toRaw(value[_settings._locale]));
 				console.log("toRaw(value[_settings._locale])", toRaw(value[_settings._locale]));
 			});
+			}
+			
 			//console.log("temp", temp);
 			edit['ca_objects.'+target] = temp;
 

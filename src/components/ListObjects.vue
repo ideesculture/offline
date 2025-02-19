@@ -20,7 +20,7 @@
 					<div v-for="item in filteredItems">
 						<div class="thumbnail-image"> 
 							<img v-if="item.default_representation" :src="item.default_representation" />
-							<img v-else src="/offline/noimage.png" style="width:100%" />
+							<img v-else :src="'/offline/noimage.png'" style="width:100%" />
 						</div>
 						<span class='ellipsis'>{{ item.title }}</span><br />
 						<a :href="'/offline/object/' + item.id">{{ item.idno.value }}</a>
