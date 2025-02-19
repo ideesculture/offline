@@ -1,85 +1,6 @@
 <template>
-	<div id="edit">
-		<div class="container">
-			<div class="col inspector">
-				<div class="resultats">
-					<router-link class="routerlink" to="/offline/" style="color:black;">
-						RÉSULTATS
-					</router-link>
-				</div>
-				<p style="padding:4px 20px;">
-					Objet en cours de modification : <br/>
-					<b>{{ data.title }}</b><br/> ({{ data.idno }})
-				</p>
-				<div style="text-align: center;padding:10px;border-bottom:2px solid #eeeeee;">
-					<img class="thumbnail" :src="edit.default_representation">
-				</div>
-				<div class="screens">
-					<div v-for="screen in screens" :class="((screen == active) ? 'active ' : '') + 'screen'" @click="loadScreen(screen)">
-						{{ screen }}
-					</div>
-					<div class="screen" @click="loadMediaScreen()">
-						MEDIA
-					</div>
-					<div class="screen" @click="loadModificationsScreen()">
-						LOG EN ATTENTE
-					</div>
-				</div>
-			</div>
-			<div class="col4">
-				<div v-if="dataHasChanged" style="padding:4px;text-align: right;">
-					<span style="background-color:#57b3c6;color:white;padding:4px 8px;border-radius: 8px;display: inline-block;">Données modifiées</span>
-				</div>
-				<div class="medias_container">
-					<h3>MEDIA</h3>
-					<div style="border:1px solid black;border-radius: 0.25em;padding:6px;">
-						<span v-for="offline_representation in edit.offline_representations">
-							<img :src="offline_representation" style="display:inline-block;width:100px;height:100px;margin:4px;" />
-						</span>
-					</div>
-				</div>
-				<div class="modifications_container" v-if="modifications">
-					<h3>LOG DES MODIFICATIONS EN ATTENTE</h3>
-					<div style="border:1px solid black;border-radius: 0.25em;padding:6px;">
-						<table style="width:100%;">
-							<tr>
-								<th style="width:100px">Modification</th>
-								<th style="width:100px">Path</th>
-								<th>Avant</th>
-								<th>Après</th>
-							</tr>
-							<tr v-for="modification in modifications">
-								<template v-if="modification.kind == 'A'">
-								</template>
-								<template v-else>
-									<td>{{ modification.kind }}</td>
-									<td>{{ modification.path }}</td>
-									<td>{{ modification.lhs }}</td>
-									<td>{{ modification.rhs }}</td>
-								</template>
-							</tr>
-						</table>
-					</div>
-				</div>
-
-				<div class="formkitContainer">
-					<FormKit type="form" v-model="edit" @submit="register">
-						<FormKitSchema :schema="schema" />
-  					</FormKit>
-					
-					<p>
-						<button :disabled="saveDisabled" class="saveButton info" @click="save">Enregistrer</button>&nbsp;
-						<router-link class="routerlink" to="/offline/">
-							<button class="cancelButton">Annuler</button>
-						</router-link>
-					</p>
-				</div>
-
-				  
-			</div>
-		</div>
+	<div id="new">
 	</div>
-	
 </template>
 
 <script>
@@ -197,7 +118,7 @@ export default defineComponent({
 		this.loadScreen(this.active);
 
 		// load data
-		this.data = db.db_objects.get(this.item_id);
+		this.data = db.db_objects.push({});
 		console.log(this.item_id);
 		let that = this;
 		let result = await db.db_objects.get(this.item_id).then(function (item) {
@@ -277,17 +198,15 @@ export default defineComponent({
 			}
 
 			target = "materiau";
-			temp=[];
 			if(item.data['ca_objects.materiau']) {
-				
+				temp=[];
 				console.log("item.data['ca_objects.materiau']", item.data['ca_objects.materiau']);
 				let materiaux = item.data['ca_objects.materiau'];
 				
 				Object.values(item.data['ca_objects.materiau']).forEach(function(value) {
 					temp.push({materiau : value[_settings._locale][target]});
 				});
-				
-			} 
+			}
 			edit['ca_objects.materiau'] = temp;
 			console.log("materiaux", edit['ca_objects.materiau']);
 

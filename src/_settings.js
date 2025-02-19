@@ -128,9 +128,15 @@ export const _settings = Object.freeze({
 									"children": "Matériau (IRPA)"
 								},
 								{
-									"$formkit": "text",
+									"$formkit": "repeater",
 									"name": "ca_objects.materiau",
-									"rows": "3"
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'materiau'
+										}
+									]
 								},
 								{
 									"$el": "h3",

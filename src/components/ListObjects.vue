@@ -13,6 +13,9 @@
 					<p class="searchblock1">Recherche : <input type="text" v-model="searchinput"></p>
 					<p class="searchblock2" style="text-align: right;"><button @click="dosearch">🔍 Recherche</button></p>
 				</div>
+				<div>
+					<span @click="newObject" style="border:1px solid #ccc;padding:10px;background-color: #eee;margin-left:10px;">✚ Ajouter un objet</span>
+				</div>
 				<div class="numresultsblock">
 					<span id="numresults">{{ numFilteredItems }}</span> objets
 				</div>
@@ -68,6 +71,131 @@ export default {
 				// search input content is copied in this.search to be applied
 				this.search = this.searchinput;
 			}
+		},
+		async newObject() {
+			let id = Math.round(Math.random() * 1000000).toString();
+			let data = {
+				"ok": true,
+				"preferred_labels": {
+					"fr_FR": [
+						{
+							"name": "NOUVEL OBJET..."
+						}
+					]
+				},
+				"intrinsic": {
+					"parent_id": "05R0456",
+					"hier_object_id": "4471",
+					"type_id": "27",
+					"idno": "TEST",
+					"idno_sort": "TEST",
+					"is_deaccessioned": "0",
+					"deaccession_date": "",
+					"deaccession_disposal_date": "",
+					"deaccession_notes": "",
+					"hier_left": "9464301.00000000000000000000",
+					"hier_right": "9464401.00000000000000000000",
+					"extent": "0",
+					"extent_units": "",
+					"access": "0",
+					"status": "0",
+					"deleted": "0",
+					"rank": "0",
+					"acl_inherit_from_ca_collections": "0",
+					"acl_inherit_from_parent": "1",
+					"access_inherit_from_parent": "0",
+					"view_count": "0"
+				},
+				"parent_id": {
+					"value": "678"
+				},
+				"hier_object_id": {
+					"value": "4471"
+				},
+				"type_id": {
+					"value": "27"
+				},
+				"idno": {
+					"value": "TEST"
+				},
+				"idno_sort": {
+					"value": "TEST"
+				},
+				"is_deaccessioned": {
+					"value": "0"
+				},
+				"deaccession_date": {
+					"value": ""
+				},
+				"deaccession_disposal_date": {
+					"value": ""
+				},
+				"deaccession_notes": {
+					"value": ""
+				},
+				"hier_left": {
+					"value": "9464301.00000000000000000000"
+				},
+				"hier_right": {
+					"value": "9464401.00000000000000000000"
+				},
+				"extent": {
+					"value": "0"
+				},
+				"extent_units": {
+					"value": ""
+				},
+				"access": {
+					"value": "0",
+					"display_text": {
+						"fr_FR": "non accessible au public"
+					}
+				},
+				"status": {
+					"value": "0",
+					"display_text": {
+						"fr_FR": null
+					}
+				},
+				"deleted": {
+					"value": "0"
+				},
+				"rank": {
+					"value": "0"
+				},
+				"acl_inherit_from_ca_collections": {
+					"value": "0"
+				},
+				"acl_inherit_from_parent": {
+					"value": "1"
+				},
+				"access_inherit_from_parent": {
+					"value": "0"
+				},
+				"view_count": {
+					"value": "0"
+				},
+				"num_comments": 0,
+				"representations": {},
+				"related": {
+					"ca_list_items": [
+					],
+					"ca_object_representations": [
+					],
+					"ca_storage_locations": []
+				},
+				"title": "NOUVEL OBJET..."
+			};
+			data.id = id;
+			let result = await db.db_objects.put({id: data.id, idno: id, data: data}).then(function(result) {
+				return true;
+				// force reload
+				
+			});
+			console.log("result", result);
+			console.log("new");
+			// force reload
+			this.$router.go();
 		}
 	},	
 	async mounted() {
