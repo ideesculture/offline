@@ -63,7 +63,7 @@
 				</div>
 
 				<div class="formkitContainer">
-					<FormKit type="form" v-model="edit" @submit="register">
+					<FormKit type="form" v-model="edit">
 						<FormKitSchema :schema="schema" />
   					</FormKit>
 					
@@ -183,6 +183,12 @@ export default defineComponent({
 	computed: {
 		
 	},
+	beforeUnmount() {
+		if(this.saveDisabled && !this.dataHasChanged) {
+			// if the data has not changed, remove the edit object
+			db.db_objects.update(this.item_id, {edit: null});
+		}
+	},
 	async mounted() {
 		console.log("mounted");
 		this.edit = {};
@@ -201,13 +207,15 @@ export default defineComponent({
 		console.log(this.item_id);
 		let that = this;
 		let result = await db.db_objects.get(this.item_id).then(function (item) {
-			console.log(item.edit);
-			if(item.edit !== undefined) {
-				console.log("item.edit", item.edit);
-				// this object has already been edited
-				edit = item.edit;
+			if(item.edit == null) {
+				console.log("this object has not already been edited.");
+			} else {
+				console.log("this object has already been edited.");
+				console.log(item.edit);
 				return true;
 			}
+			
+			
 			//console.log(item);
 
 			item.data.title = item.data.preferred_labels.fr_FR[0].name;
@@ -229,7 +237,6 @@ export default defineComponent({
 			if(item.data.preferred_labels) {
 				temp = [];
 				item.data.preferred_labels[_settings._locale].forEach(function(value) {
-					console.log("value.name", value.name);
 					temp.push({name : value.name});
 				});
 			}
@@ -276,20 +283,15 @@ export default defineComponent({
 				edit['ca_objects.date'] = Object.values(item.data['ca_objects.date'])[0][_settings._locale]["dates_value"];
 			}
 
-			target = "materiau";
-			temp=[];
-			if(item.data['ca_objects.materiau']) {
-				
-				console.log("item.data['ca_objects.materiau']", item.data['ca_objects.materiau']);
-				let materiaux = item.data['ca_objects.materiau'];
-				
-				Object.values(item.data['ca_objects.materiau']).forEach(function(value) {
-					temp.push({materiau : value[_settings._locale][target]});
+			// materiau : répétable
+			target = 'materiau';
+			temp = [];
+			if(item.data['ca_objects.'+target] && typeof item.data['ca_objects.'+target] === 'object') {
+				Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
+					temp.push({[target] : value[_settings._locale][target]});
 				});
-				
-			} 
-			edit['ca_objects.materiau'] = temp;
-			console.log("materiaux", edit['ca_objects.materiau']);
+			}
+			edit['ca_objects.'+target] = temp;
 
 			// Relations répétables
 			let relations_targets = [
@@ -299,11 +301,13 @@ export default defineComponent({
 			]
 			relations_targets.forEach(function(relation_target) {
 				temp = [];
-				if(item.data['related'][relation_target["relation"]]) {
-					Object.values(item.data['related'][relation_target['relation']]).forEach(function(value) {
-						temp.push({[relation_target['target']] : value[relation_target['target']]});
-					});
-				}
+				if(item.data['related']) {
+					if(item.data['related'][relation_target["relation"]]) {
+						Object.values(item.data['related'][relation_target['relation']]).forEach(function(value) {
+							temp.push({[relation_target['target']] : value[relation_target['target']]});
+						});
+					};
+				};
 				edit[relation_target["relation"]] = temp;
 			});
 
@@ -314,7 +318,6 @@ export default defineComponent({
 				Object.values(item.data['ca_objects.'+target]).forEach(function(value) {
 					//console.log(value[_settings._locale]);
 					temp.push(toRaw(value[_settings._locale]));
-					console.log("toRaw(value[_settings._locale])", toRaw(value[_settings._locale]));
 				});
 			}
 			//console.log("temp", temp);
@@ -341,7 +344,6 @@ export default defineComponent({
 				let temp = null;
 				Object.values(item.data.representations).forEach(function(value) {
 					if (value.is_primary == "1") {
-						console.log(value.urls.preview170);
 						edit.default_representation = value.urls.preview170;
 
 						// if the url contains ".lescollections.test", replace it with ".lescollections.be"
@@ -382,8 +384,6 @@ export default defineComponent({
 				}
 
 				let modifications = DeepDiff(edit, _edited);
-
-				console.log("here", DeepDiff(edit["ca_objects.dimensions"], _edited["ca_objects.dimensions"]));
 
 				if(modifications) {
 					this.modifications = [];
