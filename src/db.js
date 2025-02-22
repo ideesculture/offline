@@ -15,4 +15,9 @@ db.version(9).stores({ db_lists: 'id,idno,data' });
 db.version(10).stores({ db_lists: 'id,list_code,data' });
 db.version(11).stores({ db_object_representations: 'id,data' });
 db.version(12).stores({ db_objects: 'id,idno,data,edit,_edit' });
+
+// adding labels for search speed increase
+db.version(13).stores({ db_entities: 'id,idno,label,data' });
+db.version(14).stores({ db_storage_locations: 'id,idno,label,data' });
+db.version(15).stores({ db_places: 'id,idno,label,data' });
 db.open();
