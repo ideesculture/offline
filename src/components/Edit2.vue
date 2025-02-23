@@ -379,16 +379,16 @@ export default defineComponent({
 							if (prop.endsWith('_sort_')) {
 								// if the property ends with _sort_, it's a date
 								let possible_date = locale_value[prop].toString();
-								console.log("possible_date", possible_date);
-								console.log("typeof possible_date", typeof possible_date);
 								const sortDateRegex = /^[0-9]{4}\.[0-9]{4}/
 								// if possible_date starts with XXXX.XXXX it's a date
 								if (sortDateRegex.test(possible_date)) {
-									// if the date is valid, keep 9 characters and rebuild it from YYYY.MMDD to YYYY-MM-DD
-									possible_date = possible_date.substring(0, 9);
+									// explode the date on "/", and keeps the last part only
+									possible_date = possible_date.split("/").pop().substring(0, 9);
+									// if the date is valid, rebuild it from YYYY.MMDD to YYYY-MM-DD
 									possible_date = possible_date.replace(/([0-9]{4})\.([0-9]{2})([0-9]{2})/, "$1-$2-$3");
 									delete locale_value[prop];
-									locale_value[prop.replace('_sort_','')] = possible_date;
+									// we need to have 2019-04-02T01:00:00.000Z format for FormKit
+									locale_value[prop.replace('_sort_','')] = possible_date+"T00:00:00.000Z";
 								}
 							}
 						}

@@ -222,7 +222,8 @@ export const _settings = Object.freeze({
 											$formkit: 'datepicker',
 											name: 'etat_date',
 											label: "Date",
-											format : "DD/MM/YYYY"
+											format : "DD/MM/YYYY",
+											timezone: "UTC"
 										},
 										{
 											$formkit: 'text',
