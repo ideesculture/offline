@@ -1,20 +1,22 @@
 <template>
-	<div id="content">Import base de données</div>
-	<div>
-		<div class="column" style="float:left;width:50%;">
-			<p>
-				<button class="button" id="exportLink" @click="exportDB">💾 Télécharger</button> &nbsp;
-				<button class="button danger" id="purge" @click="purgeDB">🗑️ Supprimer</button>
-			</p>
-			<div id="dropzone" style="padding:100px;border:1px dotted gray;margin:20px;">
-				Glisser ici le fichier à charger
+	<div id="ImportContainer">
+		<div id="content">Import base de données</div>
+		<div>
+			<div class="column" style="float:left;width:50%;">
+				<p>
+					<button class="button" id="exportLink" @click="exportDB">💾 Télécharger</button> &nbsp;
+					<button class="button danger" id="purge" @click="purgeDB">🗑️ Supprimer</button>
+				</p>
+				<div id="dropzone" style="padding:100px;border:1px dotted gray;margin:20px;">
+					Glisser ici le fichier à charger
+				</div>
 			</div>
-		</div>
-		<div class="column" style="float:left;width:49%;">
-			<table id="dbInfos">
-				<thead></thead>
-				<tbody></tbody>
-			</table>
+			<div class="column" style="float:left;width:49%;">
+				<table id="dbInfos">
+					<thead></thead>
+					<tbody></tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </template>
@@ -129,5 +131,9 @@ table tr th {
 }
 table tr th {
 	background:lightgray;
+}
+#ImportContainer {
+	margin: auto;
+	max-width: 1000px;
 }
 </style>

@@ -111,6 +111,7 @@ export default {
 .load-menu, .menu {
 	padding-left:8px;
 	padding-right: 8px;
+	cursor:pointer;
 }
 
 .load-menu-content,
