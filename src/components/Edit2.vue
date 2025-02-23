@@ -301,7 +301,6 @@ export default defineComponent({
 			let conteneurs_targets = [
 				{ conteneur: 'objet_present', target: 'objet_present' },
 				{ conteneur: 'irpa', target: 'irpa' },
-				{ conteneur: 'etat_conservation', target: 'etat' },
 				{ conteneur: 'code_fabrique', target: 'code_fabrique' },
 				{ conteneur: 'depot_remarques', target: 'depot_remarques' },
 				{ conteneur: 'exemple_numero_auto', target: 'exemple_numero_auto' },
@@ -367,17 +366,39 @@ export default defineComponent({
 				edit[relation_target["relation"]] = temp;
 			});
 
-			// Dimensions : répétable
-			target = 'dimensions';
-			temp = [];
-			if (item.data['ca_objects.' + target]) {
-				Object.values(item.data['ca_objects.' + target]).forEach(function (value) {
-					//console.log(value[_settings._locale]);
-					temp.push(toRaw(value[_settings._locale]));
-				});
-			}
-			//console.log("temp", temp);
-			edit['ca_objects.' + target] = temp;
+			// Dimensions & état de conservation : répétables, complexes
+			let repeatable_targets = ['dimensions','etat_conservation','encodeur_c'];
+			repeatable_targets.forEach(function (target) {
+				temp = [];
+				if (item.data['ca_objects.' + target]) {
+					Object.values(item.data['ca_objects.' + target]).forEach(function (value) {
+						let locale_value = value[_settings._locale];
+						// if locale_value has a property ending with _sort_, it's an indication of a date
+						// loop through all the properties of the object
+						for (var prop in locale_value) {
+							if (prop.endsWith('_sort_')) {
+								// if the property ends with _sort_, it's a date
+								let possible_date = locale_value[prop].toString();
+								console.log("possible_date", possible_date);
+								console.log("typeof possible_date", typeof possible_date);
+								const sortDateRegex = /^[0-9]{4}\.[0-9]{4}/
+								// if possible_date starts with XXXX.XXXX it's a date
+								if (sortDateRegex.test(possible_date)) {
+									// if the date is valid, keep 9 characters and rebuild it from YYYY.MMDD to YYYY-MM-DD
+									possible_date = possible_date.substring(0, 9);
+									possible_date = possible_date.replace(/([0-9]{4})\.([0-9]{2})([0-9]{2})/, "$1-$2-$3");
+									delete locale_value[prop];
+									locale_value[prop.replace('_sort_','')] = possible_date;
+								}
+							}
+						}
+						
+						temp.push( value[_settings._locale] );
+					});
+				}
+				edit['ca_objects.' + target] = temp;
+			});
+			
 
 			let targets = ['ca_objects.precision_localisation', 'ca_objects.materiau', 'ca_objects.tournai_date'
 			];
@@ -419,6 +440,7 @@ export default defineComponent({
 
 		// Clone edit object into that.edit, but removing all the references
 		that.edit = JSON.parse(JSON.stringify(edit));
+		console.log("edit", edit);
 		that._edit = JSON.parse(JSON.stringify(edit));
 	},
 	watch: {

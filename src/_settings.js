@@ -277,6 +277,28 @@ export const _settings = Object.freeze({
 								},
 								{
 									"$el": "h3",
+									"children": "Encodeur"
+								},
+								{
+									"$formkit": "repeater",
+									"name": "ca_objects.encodeur_c",
+									"rows": "3",
+									children: [
+										{
+										  $formkit: 'text',
+										  name: 'encodeur',
+										  label: "Encodeur"
+										},
+										{
+											$formkit: 'text',
+											name: 'encodage_commentaires',
+											label: "Commentaires"
+										}
+										  
+									]
+								},
+								{
+									"$el": "h3",
 									"children": "Remarques"
 								},
 								{
