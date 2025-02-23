@@ -208,9 +208,29 @@ export const _settings = Object.freeze({
 									"children": "Etat de conservation"
 								},
 								{
-									"$formkit": "text",
+									"$formkit": "repeater",
 									"name": "ca_objects.etat_conservation",
-									"rows": "3"
+									"rows": "3",
+									children: [
+										{
+											$formkit: 'select',
+											name: 'etat',
+											label: "État",
+											options: ["bon", "mauvais", "moyen", "urgent"]
+										},
+										{
+											$formkit: 'datepicker',
+											name: 'etat_date',
+											label: "Date",
+											format : "DD/MM/YYYY"
+										},
+										{
+											$formkit: 'text',
+											name: 'commentaire',
+											label: "Commentaire"
+										}
+										  
+									]
 								},
 								{
 									"$el": "h3",
