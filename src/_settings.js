@@ -222,9 +222,19 @@ export const _settings = Object.freeze({
 									"rows": "3",
 									children: [
 										{
-										  $formkit: 'text',
-										  name: 'displayname'
+										  $formkit: 'autocomplete',
+										  name: 'displayname',
+										  label: "Personne liée ...",
+										  placeholder: "...",
+										  caRelatedTable: "ca_entities"
+										},
+										{
+											$formkit: 'select',
+											name: 'relation',
+											label: "Relation",
+											options: ["atelier", "auteur", "contributeur", "dessinateur", "editeur", "donateur", "depositaire", "graveur", "maitre verrier", "orfevre", "peintre", "proprietaire", "sculpteur"]
 										}
+										  
 									]
 								},
 								{
