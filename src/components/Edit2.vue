@@ -28,7 +28,14 @@
 				</div>
 			</div>
 			<div class="col4">
-				<div v-if="dataHasChanged" style="padding:4px;text-align: right;">
+				<p style="padding:0 40px">
+					<button :disabled="saveDisabled" class="saveButton info"
+						@click="save">Enregistrer</button>&nbsp;
+					<router-link class="routerlink" to="/offline/">
+						<button class="cancelButton">Annuler</button>
+					</router-link>
+				</p>
+				<div v-if="dataHasChanged" style="padding:4px 40px;text-align: right;">
 					<span
 						style="background-color:#57b3c6;color:white;padding:4px 8px;border-radius: 8px;display: inline-block;">Données
 						modifiées</span>
@@ -90,7 +97,7 @@
 <script>
 import { defineComponent, ref, toHandlers, isProxy, toRaw } from 'vue';
 import { FormKitSchema } from '@formkit/vue'
-import { _ } from 'lodash'
+import { _, isArray, merge, methodOf } from 'lodash'
 import $ from 'jquery'
 import { db } from '../db'
 import { _settings } from '../_settings'
@@ -176,15 +183,15 @@ export default defineComponent({
 			let editToSave = JSON.parse(JSON.stringify(that.edit));
 			await db.db_objects.get(this.item_id).then(function (item) {
 				let result = db.db_objects.update(that.item_id, { edit: editToSave });
-				console.log("result", result);
+				console.log("result", editToSave);
 				return true;
 			});
-			let _editToSave = JSON.parse(JSON.stringify(that._edit));
+			/* let _editToSave = JSON.parse(JSON.stringify(that._edit));
 			await db.db_objects.get(this.item_id).then(function (item) {
 				let result = db.db_objects.update(that.item_id, { _edit: _editToSave });
-				console.log("result", result);
+				console.log("_result", _editToSave);
 				return true;
-			});
+			}); */
 			console.log("saved");
 		},
 		loadScreen(screen) {
@@ -253,31 +260,20 @@ export default defineComponent({
 		this.default = this.screens[0];
 		this.schema = this._settings._editor.ca_objects.schema[0];
 
-		
+		let edit = this.edit;
 
 		this.active = this.default;
 		this.loadScreen(this.active);
 
 		// load data
-		this.data = db.db_objects.get(this.item_id);
-		console.log(this.item_id);
+		this.data = await db.db_objects.get(this.item_id);
+		console.log('data', this.data);
 		let that = this;
 		let result = await db.db_objects.get(this.item_id).then(function (item) {
-			if (item.edit == null) {
-				console.log("this object has not already been edited.");
-			} else {
-				console.log("this object has already been edited.");
-				console.log(item.edit);
-				return true;
-			}
-
-
-			//console.log(item);
-
-			item.data.title = item.data.preferred_labels.fr_FR[0].name;
+			item.data.title = item.edit.title || item.data.preferred_labels.fr_FR[0].name;
 			edit.title = item.data.title;
 
-			item.data.idno = item.data.idno.value;
+			item.data.idno = item.edit.idno || item.data.idno.value;
 			edit.idno = item.data.idno;
 
 			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
@@ -432,7 +428,7 @@ export default defineComponent({
 				});
 			}
 			// get first element of object
-			that.data = item.data;
+			//that.data = item.data;
 
 			// copy the object
 			return true;

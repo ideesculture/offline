@@ -24,9 +24,12 @@
 						<div class="thumbnail-image"> 
 							<img v-if="item.default_representation" :src="item.default_representation" />
 							<img v-else :src="'/offline/noimage.png'" style="width:100%" />
+							<button class="item-delete" @click="deleteItem(item)">
+								🗑️
+							</button>
 						</div>
 						<span class='ellipsis'>{{ item.title }}</span><br />
-						<a :href="'/offline/object/' + item.id">{{ item.idno.value }}</a>
+						<a :href="'/offline/object/' + item.id">{{ item.idno.value || item.idno }}</a>
 						<ul />
 					</div>
 				</div>
@@ -39,6 +42,7 @@
 import { ref } from 'vue'
 import $ from 'jquery'
 import {db} from '../db'
+import { merge } from 'lodash';
 
 const noimage = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iQ2FscXVlXzIiIGRhdGEtbmFtZT0iQ2FscXVlIDIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDE5NC42MSAxMzAuNjEiPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuY2xzLTEgewogICAgICAgIGZpbGw6ICM2NzY3Njc7CiAgICAgIH0KICAgIDwvc3R5bGU+CiAgPC9kZWZzPgogIDxnIGlkPSJDYWxxdWVfMS0yIiBkYXRhLW5hbWU9IkNhbHF1ZSAxIj4KICAgIDxnPgogICAgICA8cGF0aCBjbGFzcz0iY2xzLTEiIGQ9Ik0xOTQuNjEsMHYxMzAuNjFIMFYwaDE5NC42MVpNMTg5LjEyLDUuNDhINi4yNGwtLjc1Ljc1djEwMS40NGw1OC4xMy01Ni44NSw1MC40Nyw0OS44MywzNS4zNi0zNC4zOCwzOS42NywzOC45VjUuNDhaIi8+CiAgICAgIDxlbGxpcHNlIGNsYXNzPSJjbHMtMSIgY3g9IjEyMy4wOSIgY3k9IjQzLjAzIiByeD0iMTQuMjYiIHJ5PSIxNC4yNSIvPgogICAgPC9nPgogIDwvZz4KPC9zdmc+';
 
@@ -52,9 +56,10 @@ export default {
 	},
 	computed: {
 		filteredItems() {
+			console.log("data", this.data);
 			//console.log(this.data[10].preferred_labels.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
 			return this.data.filter(item => {
-				if(!item.title) return false;
+				if(!item.title || !item.ok) return false;
 				return item.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
 			})
 		},
@@ -63,6 +68,15 @@ export default {
 		}
 	},
 	methods: {
+		deleteItem(item) {
+			console.log(item);
+			if(confirm("Supprimer l'objet " + item.idno.value + " ?")) {
+				db.db_objects.delete(item.id).then(() => {
+					// remove from this.data
+					this.data = this.data.filter(i => i.id !== item.id);
+				});
+			}
+		},
 		dosearch() {
 			if(this.searchinput == "*") {
 				// search * fetches everything, aka no filter
@@ -85,10 +99,10 @@ export default {
 				},
 				"intrinsic": {
 					"parent_id": "05R0456",
-					"hier_object_id": "4471",
+					"hier_object_id": id,
 					"type_id": "27",
-					"idno": "TEST",
-					"idno_sort": "TEST",
+					"idno": id,
+					"idno_sort": id,
 					"is_deaccessioned": "0",
 					"deaccession_date": "",
 					"deaccession_disposal_date": "",
@@ -110,16 +124,16 @@ export default {
 					"value": "678"
 				},
 				"hier_object_id": {
-					"value": "4471"
+					"value": id
 				},
 				"type_id": {
 					"value": "27"
 				},
 				"idno": {
-					"value": "TEST"
+					"value": id
 				},
 				"idno_sort": {
-					"value": "TEST"
+					"value": id
 				},
 				"is_deaccessioned": {
 					"value": "0"
@@ -203,10 +217,19 @@ export default {
 		let that=this;
 		let i = 0;
 		let objects = await db.db_objects.toArray();
-		//console.log(objects);
+		
+		console.log('all objects', objects);
 		// loop through all of the array objects
 		for(let item of objects) {
-			item.data.title = item.data.preferred_labels.fr_FR[0].name;
+			console.log('item', item);
+			let _edit = Object.fromEntries(
+				Object.entries(item.edit ?? {}).map(([key, value]) => [
+					key.replace(/^ca_objects\./, ''),
+					value
+				])
+			);
+			item.data = merge(item.data, _edit);
+			item.data.title = item.data.preferred_labels.fr_FR?.[0].name || item.data.preferred_labels[0]?.name;
 			item.data.id = item.id;
 			// loop through all item.data.representations
 			item.data.default_representation = "/offline/noimage.png";
@@ -223,7 +246,6 @@ export default {
 				});
 			}
 			that.data.push(item.data);
-			console.log(item);
 			i++;
 		}
 		$('#numresults').html(i);
@@ -251,11 +273,24 @@ export default {
 	}
 }
 
+.item-delete {
+	background-color: rgba($color: #c5c5c5, $alpha: 0.3);
+	border-radius: 3px;
+	border: none;
+	cursor: pointer;
+	font-size: 1em;
+	padding: 4px;
+	width: 32px;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}
 
 .thumbnail-image {
 	background-color: #eeeeee;
 	padding:20px;
 	margin-bottom:14px;
+	position: relative;
 	img {
 		height: 136px;
 		object-fit: contain;
