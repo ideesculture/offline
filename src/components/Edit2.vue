@@ -186,12 +186,12 @@ export default defineComponent({
 				console.log("result", editToSave);
 				return true;
 			});
-			/* let _editToSave = JSON.parse(JSON.stringify(that._edit));
+			let _editToSave = JSON.parse(JSON.stringify(that._edit));
 			await db.db_objects.get(this.item_id).then(function (item) {
 				let result = db.db_objects.update(that.item_id, { _edit: _editToSave });
 				console.log("_result", _editToSave);
 				return true;
-			}); */
+			});
 			console.log("saved");
 		},
 		loadScreen(screen) {
@@ -428,7 +428,7 @@ export default defineComponent({
 				});
 			}
 			// get first element of object
-			//that.data = item.data;
+			that.data = item.data;
 
 			// copy the object
 			return true;
