@@ -24,8 +24,23 @@ This is a simple offline mode for Providence. It is designed to be used in a deg
 npm install
 npm run dev
 ```
-## Build
 
+## Bump version and build
+
+If patch change : 
 ```
+npm version patch
 npm run build
 ```
+If minor change : 
+```
+npm version minor
+npm run build
+```
+If major change :
+```
+npm version major
+npm run build
+```
+The built files are in the "dist" folder.
+
