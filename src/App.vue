@@ -1,16 +1,43 @@
 <script setup>
 import ListObjects from './components/ListObjects.vue'
+import { useRegisterSW } from 'virtual:pwa-register/vue'
 
+const { needRefresh, updateServiceWorker } = useRegisterSW({
+	onRegistered(r) {
+		console.log('SW Registered: ' + r)
+	},
+	onRegisterError(error) {
+		console.log('SW registration error', error)
+	}
+})
+
+// Automatically reload when a new version is available
+if (needRefresh.value) {
+	console.log('New version available, reloading...')
+	updateServiceWorker()
+}
 </script>
 <script>
 import { ref } from 'vue'
 import $ from 'jquery'
+import pkg from '../package.json'
 
 export default {
 	data() {
 		return {
-			data: []
+			data: [],
+			appVersion: pkg.version
 		}
+	},
+	mounted() {
+		// Display version in console
+		console.log(`CollectiveAccess Offline v${this.appVersion}`)
+
+		// Check for version updates periodically (every 5 minutes)
+		this.checkVersion()
+		setInterval(() => {
+			this.checkVersion()
+		}, 5 * 60 * 1000)
 	},
 	methods: {
 		toggleSearchMenu() {
@@ -20,6 +47,23 @@ export default {
 		toggleLoadMenu() {
 			$(".load-menu-content").toggle()
 			$(".menu-content").hide()
+		},
+		async checkVersion() {
+			try {
+				// Check if the stored version differs from current
+				const storedVersion = localStorage.getItem('app_version')
+				if (storedVersion && storedVersion !== this.appVersion) {
+					console.log(`Version updated from ${storedVersion} to ${this.appVersion}`)
+					// Clear caches on version change
+					if ('caches' in window) {
+						const cacheNames = await caches.keys()
+						await Promise.all(cacheNames.map(name => caches.delete(name)))
+					}
+				}
+				localStorage.setItem('app_version', this.appVersion)
+			} catch (error) {
+				console.error('Version check error:', error)
+			}
 		}
 	}
 }
@@ -28,7 +72,7 @@ export default {
 <template>
   <div class="navbarContainer">
 		<div class="navbar">
-			<div id="logo"><img :src="'/offline/menu_logo.png'" /></div>
+			<div id="logo"><a href="/"><img :src="'/offline/menu_logo.png'" /></a></div>
 			<div id="items">
 				<div class="menu" @click="toggleSearchMenu" style="padding-right:50px">CHERCHER
 					<div class="menu-content" style="display: none;">
@@ -46,9 +90,10 @@ export default {
 					</div>
 				</div>
 				<router-link class="routerlink" to="/offline/loadsettings" style="color:white;text-decoration:none;">_SETTINGS</router-link>
-				<!-- 
+				<span class="version-badge">v{{ appVersion }}</span>
+				<!--
 				<router-link class="routerlink" to="/offline/loading.html" style="color:white;text-decoration:none;">CHARGER</router-link>
-				
+
 				-->
 			</div>
 			<!--<div id="searchBar"><input type="text">🔎</div> -->
@@ -135,5 +180,11 @@ export default {
 }
 .load-menu-content {
     right: 84px;
+}
+.version-badge {
+	font-size: 0.75em;
+	color: #999;
+	margin-left: 10px;
+	font-family: 'DIN-Regular';
 }
 </style>
