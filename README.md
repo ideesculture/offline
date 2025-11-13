@@ -18,3 +18,14 @@ This is a simple offline mode for Providence. It is designed to be used in a deg
 3. Deploy the offline widget to the CA Providence installation, where Providence is in a subfolder called "providence" or "gestion". The widget should be deployed in the "app/widgets" folder.
 4. Deploy the offline plugin to the CA Providence installation, where Providence is in a subfolder called "providence" or "gestion". The plugin should be deployed in the "app/plugins" folder.
 
+## Development
+
+```
+npm install
+npm run dev
+```
+## Build
+
+```
+npm run build
+```

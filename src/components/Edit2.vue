@@ -181,18 +181,17 @@ export default defineComponent({
 			//localStorage[this.id] = JSON.stringify(this.data);
 			let that = this;
 			let editToSave = JSON.parse(JSON.stringify(that.edit));
-			await db.db_objects.get(this.item_id).then(function (item) {
-				let result = db.db_objects.update(that.item_id, { edit: editToSave });
-				console.log("result", editToSave);
-				return true;
-			});
+			let result = await db.db_objects.update(that.item_id, { edit: editToSave });
+			console.log("result", result, editToSave);
+
+			// Update _edit to match current edit state (new baseline)
+			that._edit = JSON.parse(JSON.stringify(that.edit));
 			let _editToSave = JSON.parse(JSON.stringify(that._edit));
-			await db.db_objects.get(this.item_id).then(function (item) {
-				let result = db.db_objects.update(that.item_id, { _edit: _editToSave });
-				console.log("_result", _editToSave);
-				return true;
-			});
+			let _result = await db.db_objects.update(that.item_id, { _edit: _editToSave });
+			console.log("_result", _result, _editToSave);
+
 			console.log("saved");
+			alert("Modifications enregistrées");
 		},
 		loadScreen(screen) {
 			this.active = screen;
@@ -270,10 +269,18 @@ export default defineComponent({
 		console.log('data', this.data);
 		let that = this;
 		let result = await db.db_objects.get(this.item_id).then(function (item) {
-			item.data.title = item.edit.title || item.data.preferred_labels.fr_FR[0].name;
+			// If there's a saved edit, use it directly instead of rebuilding from item.data
+			if (item.edit && Object.keys(item.edit).length > 0) {
+				console.log("Loading saved edits", item.edit);
+				Object.assign(edit, item.edit);
+				return true;
+			}
+
+			// Otherwise, build edit object from original data
+			item.data.title = (item.edit && item.edit.title) || item.data.preferred_labels.fr_FR[0].name;
 			edit.title = item.data.title;
 
-			item.data.idno = item.edit.idno || item.data.idno.value;
+			item.data.idno = (item.edit && item.edit.idno) || item.data.idno.value;
 			edit.idno = item.data.idno;
 
 			// Treatment for complex data storage, where the first element is the one we want to display, and the locale to extract is fr_FR
@@ -366,7 +373,12 @@ export default defineComponent({
 			let repeatable_targets = ['dimensions','etat_conservation','encodeur_c'];
 			repeatable_targets.forEach(function (target) {
 				temp = [];
-				if (item.data['ca_objects.' + target]) {
+				// Check if there's a saved edit first, otherwise use original data
+				if (item.edit && item.edit['ca_objects.' + target]) {
+					// Use saved edit data
+					edit['ca_objects.' + target] = item.edit['ca_objects.' + target];
+				} else if (item.data['ca_objects.' + target]) {
+					// Use original data
 					Object.values(item.data['ca_objects.' + target]).forEach(function (value) {
 						let locale_value = value[_settings._locale];
 						// if locale_value has a property ending with _sort_, it's an indication of a date
@@ -388,11 +400,11 @@ export default defineComponent({
 								}
 							}
 						}
-						
+
 						temp.push( value[_settings._locale] );
 					});
+					edit['ca_objects.' + target] = temp;
 				}
-				edit['ca_objects.' + target] = temp;
 			});
 			
 
@@ -440,49 +452,52 @@ export default defineComponent({
 		that._edit = JSON.parse(JSON.stringify(edit));
 	},
 	watch: {
-		'edit': async function () {
-			var _edited = {};
-			// loop through all the keys of this.edit
-			for (var key in this.edit) {
-				//loop through all the keys of this.edit, and compare them with the keys of global var edit
-				// if the key is in the global var edit, add it to the _edited object
-				// do this to avoid fetching an empty property at the beginning
-				if (edit.hasOwnProperty(key)) {
-					_edited[key] = toRaw(this.edit[key]);
-				} else {
-					//console.log("!edit.hasOwnProperty(key)", key);
-					if (this.edit[key] !== undefined) {
+		'edit': {
+			handler: async function () {
+				var _edited = {};
+				// loop through all the keys of this.edit
+				for (var key in this.edit) {
+					//loop through all the keys of this.edit, and compare them with the keys of global var edit
+					// if the key is in the global var edit, add it to the _edited object
+					// do this to avoid fetching an empty property at the beginning
+					if (edit.hasOwnProperty(key)) {
 						_edited[key] = toRaw(this.edit[key]);
-					}
-				}
-			}
-
-			let modifications = DeepDiff(edit, _edited);
-
-			if (modifications) {
-				this.modifications = [];
-				//loop through all keys of modifications
-				for (var key in modifications) {
-					// push modifications to display
-					if (modifications[key].kind == "A") {
-						// Array
-						//this.modifications.push({kind:modifications[key].kind, path:modifications[key].path, lhs:modifications[key].lhs, rhs:modifications[key].rhs});
-						console.log("Array", modifications[key].item);
-						this.modifications.push({ kind: "A" + modifications[key].item.kind, path: modifications[key].path.join(".") + "." + modifications[key].index, lhs: "", rhs: JSON.stringify(modifications[key].item.rhs) });
 					} else {
-						this.modifications.push({ kind: modifications[key].kind, path: modifications[key].path.join("."), lhs: modifications[key].lhs, rhs: modifications[key].rhs });
+						//console.log("!edit.hasOwnProperty(key)", key);
+						if (this.edit[key] !== undefined) {
+							_edited[key] = toRaw(this.edit[key]);
+						}
 					}
-
 				}
-				this.saveDisabled = false;
-				this.dataHasChanged = true;
-				//console.log("data has changed : this.edit", this.edit);
-			} else {
-				this.modifications = [];
-				//console.log("data has not changed");
-				this.saveDisabled = true;
-				this.dataHasChanged = false;
-			}
+
+				let modifications = DeepDiff(edit, _edited);
+
+				if (modifications) {
+					this.modifications = [];
+					//loop through all keys of modifications
+					for (var key in modifications) {
+						// push modifications to display
+						if (modifications[key].kind == "A") {
+							// Array
+							//this.modifications.push({kind:modifications[key].kind, path:modifications[key].path, lhs:modifications[key].lhs, rhs:modifications[key].rhs});
+							console.log("Array", modifications[key].item);
+							this.modifications.push({ kind: "A" + modifications[key].item.kind, path: modifications[key].path.join(".") + "." + modifications[key].index, lhs: "", rhs: JSON.stringify(modifications[key].item.rhs) });
+						} else {
+							this.modifications.push({ kind: modifications[key].kind, path: modifications[key].path.join("."), lhs: modifications[key].lhs, rhs: modifications[key].rhs });
+						}
+
+					}
+					this.saveDisabled = false;
+					this.dataHasChanged = true;
+					//console.log("data has changed : this.edit", this.edit);
+				} else {
+					this.modifications = [];
+					//console.log("data has not changed");
+					this.saveDisabled = true;
+					this.dataHasChanged = false;
+				}
+			},
+			deep: true
 		}
 	}
 });

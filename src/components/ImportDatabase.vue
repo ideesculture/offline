@@ -5,7 +5,7 @@
 			<div class="column" style="float:left;width:50%;">
 				<p>
 					<button class="button" id="exportLink" @click="exportDB">💾 Télécharger</button> &nbsp;
-					<button class="button danger" id="purge" @click="purgeDB">🗑️ Supprimer</button>
+					<button class="button danger" id="purge" @click="purgeDB">🗑️ Vider tout</button>
 				</p>
 				<div id="dropzone" style="padding:100px;border:1px dotted gray;margin:20px;">
 					Glisser ici le fichier à charger
@@ -60,7 +60,14 @@ export default {
 				let result = await db.import(file, {
 					progressCallback
 				});
-				console.log("Import complete");
+				console.log("Import complete", result);
+				// show an alert with number of rows imported
+				if (result && result.totalRows !== undefined) {
+					alert(`Import terminé : ${result.totalRows} enregistrements importés dans ${result.totalTables} tables.`);
+				} else {
+					alert(`Import terminé`);
+				}
+				// Refresh content display
 				await showContent();
 			} catch (error) {
 				console.error(''+error);

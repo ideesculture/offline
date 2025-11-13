@@ -42,7 +42,7 @@ export default {
 				</div>
 				<div class="load-menu" @click="toggleLoadMenu" style="padding-right:50px">CHARGER
 					<div class="load-menu-content" style="display: none;">
-						<router-link class="routerlink" to="/offline/import_database/">BASE DE DONNÉES</router-link>
+						<router-link class="routerlink" to="/offline/import_database/">DONNÉES OFFLINE</router-link>
 					</div>
 				</div>
 				<router-link class="routerlink" to="/offline/loadsettings" style="color:white;text-decoration:none;">_SETTINGS</router-link>
