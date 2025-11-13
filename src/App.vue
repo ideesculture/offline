@@ -72,7 +72,7 @@ export default {
 <template>
   <div class="navbarContainer">
 		<div class="navbar">
-			<div id="logo"><a href="/"><img :src="'/offline/menu_logo.png'" /></a></div>
+			<div id="logo"><a href="/gestion/"><img :src="'/offline/menu_logo.png'" /></a></div>
 			<div id="items">
 				<div class="menu" @click="toggleSearchMenu" style="padding-right:50px">CHERCHER
 					<div class="menu-content" style="display: none;">
