@@ -159,7 +159,7 @@ export default defineComponent({
 			dataHasChanged: false,
 			data: {}, // original data
 			edit: {}, // editable data,
-			_edit: {}, // copy of the original data, as an editable to make comparison
+			_edit: {}, // copy of the original data to make comparison. DO NOT USE DIRECTLY
 			_settings: {},
 			schema: [],
 			id: this.$route.params.id,
@@ -183,13 +183,6 @@ export default defineComponent({
 			let editToSave = JSON.parse(JSON.stringify(that.edit));
 			let result = await db.db_objects.update(that.item_id, { edit: editToSave });
 			console.log("result", result, editToSave);
-
-			// Update _edit to match current edit state (new baseline)
-			that._edit = JSON.parse(JSON.stringify(that.edit));
-			let _editToSave = JSON.parse(JSON.stringify(that._edit));
-			let _result = await db.db_objects.update(that.item_id, { _edit: _editToSave });
-			console.log("_result", _result, _editToSave);
-
 			console.log("saved");
 			alert("Modifications enregistrées");
 		},
