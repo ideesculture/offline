@@ -59,7 +59,8 @@ export default {
 			console.log("data", this.data);
 			//console.log(this.data[10].preferred_labels.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
 			return this.data.filter(item => {
-				if(!item.title || !item.ok) return false;
+				if(!item.title) item.title = "[Sans titre]"
+				if(!item.ok) return false;
 				return item.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
 			})
 		},
