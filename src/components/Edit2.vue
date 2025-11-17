@@ -31,6 +31,7 @@
 				<p style="padding:0 40px">
 					<button :disabled="saveDisabled" class="saveButton info"
 						@click="save">Enregistrer</button>&nbsp;
+					<button class="resetButton warning" @click="reset">Réinitialiser</button>&nbsp;
 					<router-link class="routerlink" to="/offline/">
 						<button class="cancelButton">Annuler</button>
 					</router-link>
@@ -81,6 +82,7 @@
 					<p>
 						<button :disabled="saveDisabled" class="saveButton info"
 							@click="save">Enregistrer</button>&nbsp;
+						<button class="resetButton warning" @click="reset">Réinitialiser</button>&nbsp;
 						<router-link class="routerlink" to="/offline/">
 							<button class="cancelButton">Annuler</button>
 						</router-link>
@@ -183,8 +185,28 @@ export default defineComponent({
 			let editToSave = JSON.parse(JSON.stringify(that.edit));
 			let result = await db.db_objects.update(that.item_id, { edit: editToSave });
 			console.log("result", result, editToSave);
+
+			console.log(that._edit);
+
+			// Update _edit to match current edit state (new baseline)
+			//that._edit = JSON.parse(JSON.stringify(that.edit));
+			//let _editToSave = JSON.parse(JSON.stringify(that._edit));
+			//let _result = await db.db_objects.update(that.item_id, { _edit: _editToSave });
+			//console.log("_result", _result, _editToSave);
+
 			console.log("saved");
 			alert("Modifications enregistrées");
+		},
+		async reset() {
+			if (confirm("Êtes-vous sûr de vouloir réinitialiser toutes les modifications ? Cette action est irréversible.")) {
+				let that = this;
+				// Clear the edit and _edit from the database
+				await db.db_objects.update(that.item_id, { edit: null, _edit: null });
+				console.log("Edit data cleared from database");
+
+				// Reload the current page
+				window.location.reload();
+			}
 		},
 		loadScreen(screen) {
 			this.active = screen;
@@ -443,6 +465,17 @@ export default defineComponent({
 		that.edit = JSON.parse(JSON.stringify(edit));
 		console.log("edit", edit);
 		that._edit = JSON.parse(JSON.stringify(edit));
+
+		// Save the initial edit and _edit to database if they don't exist yet
+		// This creates a baseline for comparison and allows the reset function to work
+		const currentItem = await db.db_objects.get(that.item_id);
+		if (!currentItem.edit || Object.keys(currentItem.edit).length === 0) {
+			console.log("Initializing edit and _edit in database");
+			await db.db_objects.update(that.item_id, {
+				edit: JSON.parse(JSON.stringify(edit)),
+				_edit: JSON.parse(JSON.stringify(edit))
+			});
+		}
 	},
 	watch: {
 		'edit': {
@@ -523,6 +556,20 @@ const count = ref(0)
 	cursor: not-allowed;
 	background: lightgray;
 	border: 0;
+}
+
+.resetButton {
+	background: #ff9800;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+}
+
+.resetButton:hover {
+	background: #f57c00;
 }
 
 .container h3 {
